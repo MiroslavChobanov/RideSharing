@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RideSharing.Models;
-using System.Diagnostics;
-
-namespace RideSharing.Controllers
+﻿namespace RideSharing.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using RideSharing.Models;
+    using System.Diagnostics;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

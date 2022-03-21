@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Data;
+using RideSharing.Services.Vehicles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ var connectionString = builder
 
 builder
     .Services
-    .AddDbContext<ApplicationDbContext>(options =>options
+    .AddDbContext<RideSharingDbContext>(options =>options
     .UseSqlServer(connectionString));
 
 builder
@@ -27,8 +28,10 @@ builder
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
     })
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<RideSharingDbContext>();
 
+builder
+    .Services.AddTransient<IVehicleService, VehicleService>();
 
 builder
     .Services
@@ -56,5 +59,5 @@ app.UseHttpsRedirection()
 app.MapDefaultControllerRoute();
 
 app.MapRazorPages();
-
+app.UseAuthentication();
 app.Run();

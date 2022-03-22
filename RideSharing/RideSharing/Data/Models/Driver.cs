@@ -15,7 +15,6 @@
         public int DriversLicenseId { get; set; }
         public DateTime StartedOn { get; set; }
         [Required]
-        public string UserId { get; set; }
 
         public IEnumerable<Vehicle> Vehicles { get; init; } = new List<Vehicle>();
         public IEnumerable<Trip> Trips { get; init; } = new List<Trip>();

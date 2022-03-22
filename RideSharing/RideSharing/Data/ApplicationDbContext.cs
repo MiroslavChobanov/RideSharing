@@ -14,7 +14,6 @@
         public DbSet<Rider> Riders { get; set; }
         public DbSet<RiderTrip> RiderTrips { get; set; }
         public DbSet<Trip> Trips { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public RideSharingDbContext(DbContextOptions<RideSharingDbContext> options)
@@ -46,6 +45,8 @@
                 .HasOne(rt => rt.Trip)
                 .WithMany(t => t.RidersTrips)
                 .HasForeignKey(rt => rt.TripId);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

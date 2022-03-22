@@ -16,5 +16,8 @@
 
         public int VehicleTypeId { get; set; }
         public VehicleType VehicleType { get; set; }
+
+        public IEnumerable<Trip> Trips { get; init; } = new List<Trip>();
+
     }
 }

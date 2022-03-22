@@ -6,7 +6,17 @@
 
     public class RideSharingDbContext : IdentityDbContext
     {
-        
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Rate> Rates { get; set; }
+        public DbSet<RateTrip> RateTrips { get; set; }
+        public DbSet<Rider> Riders { get; set; }
+        public DbSet<RiderTrip> RiderTrips { get; set; }
+        public DbSet<Trip> Trips { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<VehicleType> VehicleTypes { get; set; }
         public RideSharingDbContext(DbContextOptions<RideSharingDbContext> options)
             : base(options)
         {

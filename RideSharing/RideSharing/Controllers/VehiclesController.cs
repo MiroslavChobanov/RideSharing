@@ -50,9 +50,13 @@
             return View(vehicle);
         }
 
+        // GET: Vehicles/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new CreateVehicleFormModel
+            {
+                VehicleTypes = this.GetCarVehicleType()
+            });
         }
 
         // POST: Vehicles/Create
@@ -69,7 +73,8 @@
                     vehicle.Model,
                     vehicle.Make,
                     vehicle.YearOfCreation,
-                    vehicle.LastServicingDate);
+                    vehicle.LastServicingDate,
+                    vehicle.ImagePath);
 
 
             return Redirect("/Vehicles/Index");
@@ -164,6 +169,18 @@
         private bool VehicleExists(int id)
         {
             return _context.Vehicles.Any(e => e.Id == id);
+        }
+
+        private IEnumerable<CarVehicleTypeViewModel> GetCarVehicleType()
+        {
+            return this._context
+                .VehicleTypes
+                .Select(vt => new CarVehicleTypeViewModel
+            {
+                Id = vt.Id,
+                Type = vt.Type
+            })
+            .ToList();
         }
     }
 }

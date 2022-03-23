@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Data;
+using RideSharing.Data.Models;
 using RideSharing.Infrastructure;
 using RideSharing.Services.Vehicles;
 

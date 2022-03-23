@@ -48,6 +48,7 @@
                 new VehicleType { Type = "SUV" },
                 new VehicleType { Type = "Pickup Truck" },
                 new VehicleType { Type = "Van" },
+                new VehicleType { Type = "Bus" },
             });
 
             data.SaveChanges();

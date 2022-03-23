@@ -11,14 +11,15 @@
         {
             this.data = data;
         }
-        public int Create(string model, string make, string yearOfCreation, string lastServicingDate)
+        public int Create(string model, string make, string yearOfCreation, string lastServicingDate, string imagePath)
         {
             var vehicleData = new Vehicle
             {
                 Model = model,
                 Make = make,
                 YearOfCreation = DateTime.Parse(yearOfCreation),
-                LastServicingDate = DateTime.Parse(lastServicingDate)
+                LastServicingDate = DateTime.Parse(lastServicingDate),
+                ImagePath = imagePath
             };
 
             this.data.Vehicles.Add(vehicleData);

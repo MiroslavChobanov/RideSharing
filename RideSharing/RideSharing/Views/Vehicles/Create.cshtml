@@ -1,19 +1,17 @@
-﻿@model RideSharing.Data.Models.Vehicle
+﻿@model RideSharing.Models.Vehicles.CreateVehicleFormModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Vehicle</h4>
+<h3>Create Vehicle</h3>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
+                <label asp-for="Model" class="control-label" ></label>
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
@@ -32,6 +30,21 @@
                 <input asp-for="LastServicingDate" class="form-control" />
                 <span asp-validation-for="LastServicingDate" class="text-danger"></span>
             </div> 
+            <div class="form-group">
+                <label asp-for="ImagePath" class="control-label"></label>
+                <input asp-for="ImagePath" class="form-control" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="VehicleTypeId" class="control-label"></label>
+                <select asp-for="VehicleTypeId" class="form-control" />
+                    @foreach ( var vehicleType in Model.VehicleTypes)
+                {
+                    <option value = "@vehicleType.Id">@vehicleType.Type</option>
+                }
+            </div> 
+            
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

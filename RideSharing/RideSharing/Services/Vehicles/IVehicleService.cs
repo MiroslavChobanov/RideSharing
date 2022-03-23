@@ -6,6 +6,7 @@
             string model,
             string make,
             string yearOfCreation,
-            string lastServicingDate);
+            string lastServicingDate,
+            string ImagePath);
     }
 }

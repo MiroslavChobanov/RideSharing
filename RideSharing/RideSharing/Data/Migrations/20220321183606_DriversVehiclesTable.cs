@@ -45,7 +45,7 @@ namespace RideSharing.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Make = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    YearOfCreation = table.Column<int>(type: "int", nullable: false),
                     LastServicingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DriverId = table.Column<int>(type: "int", nullable: false),
                     VehicleTypeId = table.Column<int>(type: "int", nullable: false)

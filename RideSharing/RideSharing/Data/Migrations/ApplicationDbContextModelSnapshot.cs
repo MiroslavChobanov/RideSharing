@@ -473,8 +473,8 @@ namespace RideSharing.Data.Migrations
                     b.Property<int>("VehicleTypeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("YearOfCreation")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("YearOfCreation")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

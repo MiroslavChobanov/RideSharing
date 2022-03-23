@@ -74,7 +74,8 @@
                     vehicle.Make,
                     vehicle.YearOfCreation,
                     vehicle.LastServicingDate,
-                    vehicle.ImagePath);
+                    vehicle.ImagePath,
+                    vehicle.VehicleTypeId);
 
 
             return Redirect("/Vehicles/Index");

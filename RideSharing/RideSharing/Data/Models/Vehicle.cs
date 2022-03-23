@@ -9,7 +9,7 @@
         public string Model { get; set; }
         [Required]
         public string Make { get; set; }
-        public DateTime YearOfCreation { get; set; }
+        public int YearOfCreation { get; set; }
         public DateTime LastServicingDate { get; set; }
         public string ImagePath { get; set; }
         public int DriverId { get; set; }

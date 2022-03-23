@@ -5,8 +5,9 @@
         int Create(
             string model,
             string make,
-            string yearOfCreation,
+            int yearOfCreation,
             string lastServicingDate,
-            string ImagePath);
+            string ImagePath,
+            int VehicleTypeId);
     }
 }

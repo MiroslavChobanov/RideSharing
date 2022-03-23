@@ -50,15 +50,12 @@
             return View(vehicle);
         }
 
-        // GET: Vehicles/Create
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Vehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateVehicleFormModel vehicle)

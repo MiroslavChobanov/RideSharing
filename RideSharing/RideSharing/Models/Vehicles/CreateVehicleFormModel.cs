@@ -7,7 +7,6 @@
     {
         public int Id { get; init; }
         [Required]
-        
         [MaxLength(DefaultMaxLength)]
         public string Model { get; set; }
         [Required]
@@ -15,5 +14,7 @@
         public string Make { get; set; }
         public string YearOfCreation { get; set; }
         public string LastServicingDate { get; set; }
+
+        public int VehicleTypeId { get; set; }
     }
 }

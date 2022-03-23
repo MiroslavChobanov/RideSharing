@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Data;
+using RideSharing.Infrastructure;
 using RideSharing.Services.Vehicles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,7 @@ builder
     .AddControllersWithViews();
 
 var app = builder.Build();
+    app.PrepareDatabase();
 
 if (app.Environment.IsDevelopment())
 {

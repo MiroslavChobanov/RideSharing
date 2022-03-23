@@ -1,8 +1,9 @@
 ﻿namespace RideSharing.Controllers
 {
+    using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using RideSharing.Models;
-    using System.Diagnostics;
+    
 
     public class HomeController : Controller
     {
@@ -18,10 +19,6 @@
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

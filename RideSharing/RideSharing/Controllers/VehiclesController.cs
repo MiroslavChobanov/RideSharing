@@ -11,20 +11,23 @@
     using RideSharing.Data.Models;
     using RideSharing.Models.Vehicles;
     using RideSharing.Services.Vehicles;
+    using RideSharing.Services.Drivers;
 
     public class VehiclesController : Controller
     {
         private readonly RideSharingDbContext _context;
         private readonly IVehicleService vehicles;
+        private readonly IDriverService drivers;
 
-        public VehiclesController(RideSharingDbContext context, IVehicleService vehicles)
+        public VehiclesController(RideSharingDbContext context, IVehicleService vehicles, IDriverService drivers)
         {
             _context = context;
             this.vehicles = vehicles;
+            this.drivers = drivers;
         }
 
         // GET: Vehicles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> All()
         {
             var rideSharingDbContext = _context.Vehicles.Include(v => v.Driver).Include(v => v.VehicleType);
             return View(await rideSharingDbContext.ToListAsync());
@@ -64,18 +67,21 @@
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateVehicleFormModel vehicle)
         {
+            var driverId = this.drivers.
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
             var vehicleId = this.vehicles.Create(
+                    vehicle.Brand,
                     vehicle.Model,
-                    vehicle.Make,
                     vehicle.YearOfCreation,
                     vehicle.LastServicingDate,
                     vehicle.ImagePath,
-                    vehicle.VehicleTypeId);
+                    vehicle.VehicleTypeId,
+                    driverId);
 
 
             return Redirect("/Vehicles/Index");

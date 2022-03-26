@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<RideSharing.Data.Models.Vehicle>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All";
 }
 
-<h1>Index</h1>
+<h1>All Vehicles</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Make)
+                @Html.DisplayNameFor(model => model.Model)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.YearOfCreation)
@@ -37,10 +37,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Model)
+                @Html.DisplayFor(modelItem => item.Brand)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Make)
+                @Html.DisplayFor(modelItem => item.Model)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.YearOfCreation)

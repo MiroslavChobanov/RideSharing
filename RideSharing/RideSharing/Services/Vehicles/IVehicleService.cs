@@ -3,8 +3,8 @@
     public interface IVehicleService
     {
         int Create(
+            string brand,
             string model,
-            string make,
             int yearOfCreation,
             string lastServicingDate,
             string ImagePath,

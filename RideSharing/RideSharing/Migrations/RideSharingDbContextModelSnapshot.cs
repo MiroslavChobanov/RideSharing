@@ -8,10 +8,10 @@ using RideSharing.Data;
 
 #nullable disable
 
-namespace RideSharing.Data.Migrations
+namespace RideSharing.Migrations
 {
     [DbContext(typeof(RideSharingDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class RideSharingDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -86,6 +86,10 @@ namespace RideSharing.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -137,6 +141,8 @@ namespace RideSharing.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -264,7 +270,8 @@ namespace RideSharing.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
@@ -272,12 +279,25 @@ namespace RideSharing.Data.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("StartedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Drivers");
                 });
@@ -368,6 +388,10 @@ namespace RideSharing.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Riders");
@@ -416,9 +440,6 @@ namespace RideSharing.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RiderId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
@@ -437,8 +458,6 @@ namespace RideSharing.Data.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.HasIndex("RiderId");
-
                     b.HasIndex("VehicleId");
 
                     b.ToTable("Trips");
@@ -452,6 +471,11 @@ namespace RideSharing.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
@@ -462,13 +486,13 @@ namespace RideSharing.Data.Migrations
                     b.Property<DateTime>("LastServicingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Make")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("RiderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("VehicleTypeId")
                         .HasColumnType("int");
@@ -479,6 +503,8 @@ namespace RideSharing.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DriverId");
+
+                    b.HasIndex("RiderId");
 
                     b.HasIndex("VehicleTypeId");
 
@@ -495,11 +521,29 @@ namespace RideSharing.Data.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
                     b.ToTable("VehicleTypes");
+                });
+
+            modelBuilder.Entity("RideSharing.Data.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -507,7 +551,7 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -516,7 +560,7 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -525,7 +569,7 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -534,13 +578,13 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -549,7 +593,7 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -558,7 +602,7 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("RideSharing.Data.Models.Rider", "Rider")
                         .WithMany("Comments")
                         .HasForeignKey("RiderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Trip", null)
@@ -568,24 +612,33 @@ namespace RideSharing.Data.Migrations
                     b.Navigation("Rider");
                 });
 
+            modelBuilder.Entity("RideSharing.Data.Models.Driver", b =>
+                {
+                    b.HasOne("RideSharing.Data.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("RideSharing.Data.Models.Driver", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RideSharing.Data.Models.Payment", b =>
                 {
                     b.HasOne("RideSharing.Data.Models.Driver", "Driver")
                         .WithMany("Payments")
                         .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Rider", "Rider")
                         .WithMany("Payments")
                         .HasForeignKey("RiderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Trip", "Trip")
                         .WithMany()
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Driver");
@@ -600,13 +653,13 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("RideSharing.Data.Models.Rate", "Rate")
                         .WithMany("RatesTrips")
                         .HasForeignKey("RateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Trip", "Trip")
                         .WithMany("RatesTrips")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Rate");
@@ -619,13 +672,13 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("RideSharing.Data.Models.Rider", "Rider")
                         .WithMany("RidersTrips")
                         .HasForeignKey("RiderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Trip", "Trip")
                         .WithMany("RidersTrips")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Rider");
@@ -638,32 +691,24 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("RideSharing.Data.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Driver", "Driver")
                         .WithMany("Trips")
                         .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RideSharing.Data.Models.Rider", "Rider")
-                        .WithMany()
-                        .HasForeignKey("RiderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RideSharing.Data.Models.Vehicle", "Vehicle")
                         .WithMany("Trips")
                         .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Comment");
 
                     b.Navigation("Driver");
-
-                    b.Navigation("Rider");
 
                     b.Navigation("Vehicle");
                 });
@@ -673,16 +718,22 @@ namespace RideSharing.Data.Migrations
                     b.HasOne("RideSharing.Data.Models.Driver", "Driver")
                         .WithMany("Vehicles")
                         .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("RideSharing.Data.Models.Rider", "Rider")
+                        .WithMany()
+                        .HasForeignKey("RiderId");
 
                     b.HasOne("RideSharing.Data.Models.VehicleType", "VehicleType")
                         .WithMany("Vehicles")
                         .HasForeignKey("VehicleTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Driver");
+
+                    b.Navigation("Rider");
 
                     b.Navigation("VehicleType");
                 });

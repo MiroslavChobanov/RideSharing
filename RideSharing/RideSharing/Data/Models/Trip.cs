@@ -22,8 +22,6 @@
 
         public decimal TripCost { get; set; }
         public double TripRating { get; set; }
-        public int RiderId { get; set; }
-        public Rider Rider { get; set; }
 
         public IEnumerable<RateTrip> RatesTrips { get; set; } = new List<RateTrip>();
         public IEnumerable<RiderTrip> RidersTrips { get; set; } = new List<RiderTrip>();

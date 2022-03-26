@@ -3,17 +3,20 @@
     using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
 
-    using static Data.DataConstants;
+    using static Data.DataConstants.Vehicle;
     public class CreateVehicleFormModel
     {
-        public int Id { get; init; }
         [Required]
+        [StringLength(BrandMaxLength, MinimumLength = BrandMinLength)]
+        public string Brand { get; init; }
+        [Required]
+        [StringLength(ModelMaxLength, MinimumLength = ModelMinLength)]
         public string Model { get; init; }
-        [Required]
-        public string Make { get; init; }
+        [Range(YearMinValue,YearMaxValue)]
         public int YearOfCreation { get; init; }
         public string LastServicingDate { get; init; }
         [Required]
+        [Url]
         [Display(Name = "Image Path")]
         public string ImagePath { get; init; }
         [Display(Name = "Vehicle Type")]

@@ -25,5 +25,21 @@
 
             return driverData.Id;
         }
+
+        public bool IsDriver(string userId)
+        {
+            return this.data
+                .Drivers
+                .Any(d => d.UserId == userId);
+        }
+
+        public int IdByUser(string userId)
+        {
+            return this.data
+                .Drivers
+                .Where(d => d.UserId == userId)
+                .Select(d => d.Id)
+                .FirstOrDefault();
+        }
     }
 }

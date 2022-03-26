@@ -2,10 +2,14 @@
 {
     public interface IDriverService
     {
-        int Join(
+        public int Join(
             string firstName,
             string lastName,
             string gender,
             string phoneNumber);
+
+        public bool IsDriver(string userId);
+
+        public int IdByUser(string userId);
     }
 }

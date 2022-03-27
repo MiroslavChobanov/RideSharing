@@ -10,14 +10,15 @@
         {
             this.data = data;
         }
-        public int Join(string firstName, string lastName, string gender, string phoneNumber)
+        public int Join(string firstName, string lastName, string gender, string phoneNumber, string userId)
         {
             var driverData = new Driver
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Gender = gender,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                UserId = userId
             };
 
             this.data.Drivers.Add(driverData);

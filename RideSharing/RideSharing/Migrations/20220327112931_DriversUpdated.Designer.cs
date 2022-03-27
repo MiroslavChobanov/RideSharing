@@ -12,8 +12,8 @@ using RideSharing.Data;
 namespace RideSharing.Migrations
 {
     [DbContext(typeof(RideSharingDbContext))]
-    [Migration("20220326135832_VehiclesDriversUpdated")]
-    partial class VehiclesDriversUpdated
+    [Migration("20220327112931_DriversUpdated")]
+    partial class DriversUpdated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

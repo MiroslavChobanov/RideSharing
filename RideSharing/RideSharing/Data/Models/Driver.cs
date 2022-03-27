@@ -17,7 +17,6 @@
         [Required]
         [MaxLength(PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
-        public int DriversLicenseId { get; set; }
         public DateTime StartedOn { get; set; }
         [Required]
         public string UserId { get; set; }

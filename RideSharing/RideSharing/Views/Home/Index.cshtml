@@ -1,8 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Welcome to Ride Sharing!";
+    ViewData["Title"] = "Welcome!";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div class="jumbotron">
+        <h1 class="display-4">Welcome to the best place for mutual travelling!</h1>
+        <p class="lead">Want to reduce the money you spend on travelling?</p>
+        <p class="lead">Want to have some company while on the road?</p>
+        <p class="lead">Then you are in the right place! Click the button below to get started!</p>
+        <hr class="my-4">
+        <p class="lead">
+            <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
+            <button type="button" class="btn btn-danger btn-lg">Join As Rider</button>
+        </p>
+        <img src="https://icdn.digitaltrends.com/image/digitaltrends/best-ridesharing-apps-scoop-500x500.jpg" class="img-fluid" alt="Responsive image">
+    </div>

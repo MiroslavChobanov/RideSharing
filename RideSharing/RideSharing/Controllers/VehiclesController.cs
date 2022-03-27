@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using RideSharing.Data;
-    using RideSharing.Data.Models;
     using RideSharing.Models.Vehicles;
     using RideSharing.Services.Vehicles;
     using RideSharing.Services.Drivers;
@@ -35,22 +34,9 @@
             return View(await rideSharingDbContext.ToListAsync());
         }
 
-        // GET: Vehicles/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicle = await _context.Vehicles
-                .Include(v => v.Driver)
-                .Include(v => v.VehicleType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
+            var vehicle = this.vehicles.Details(id);
 
             return View(vehicle);
         }
@@ -99,59 +85,62 @@
             return Redirect("/Vehicles/All");
         }
 
-        // GET: Vehicles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            var userId = this.User.Id();
+
+            if (!this.drivers.IsDriver(userId))
             {
-                return NotFound();
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
-            var vehicle = await _context.Vehicles.FindAsync(id);
-            if (vehicle == null)
+            var vehicle = this.vehicles.Details(id);
+
+            if (vehicle.UserId != userId)
             {
-                return NotFound();
+                return Unauthorized();
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Id", vehicle.DriverId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "Id", vehicle.VehicleTypeId);
+
             return View(vehicle);
         }
 
-        // POST: Vehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Model,Make,YearOfCreation,LastServicingDate,DriverId,VehicleTypeId")] Vehicle vehicle)
+        [Authorize]
+        public async Task<IActionResult> Edit(int vehicleId, CreateVehicleFormModel vehicle)
         {
-            if (id != vehicle.Id)
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (driverId == 0 )
             {
-                return NotFound();
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
-            if (ModelState.IsValid)
+            if (!this.vehicles.VehicleTypeExists(vehicle.VehicleTypeId))
             {
-                try
-                {
-                    _context.Update(vehicle);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleExists(vehicle.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                this.ModelState.AddModelError(nameof(vehicle.VehicleTypeId), "Vehicle Type does not exist.");
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Id", vehicle.DriverId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "Id", vehicle.VehicleTypeId);
-            return View(vehicle);
+
+            if (!this.vehicles.IsByDriver(vehicleId, driverId))
+            {
+                return BadRequest();
+            }
+
+            var vehicleEdited = this.vehicles.Edit(
+                vehicleId,
+                vehicle.Brand,
+                vehicle.Model,
+                vehicle.YearOfCreation,
+                vehicle.LastServicingDate,
+                vehicle.ImagePath,
+                vehicle.VehicleTypeId);
+
+            if (!vehicleEdited)
+            {
+                return BadRequest();
+            }
+
+            return Redirect("/Vehicles/All");
         }
 
         // GET: Vehicles/Delete/5

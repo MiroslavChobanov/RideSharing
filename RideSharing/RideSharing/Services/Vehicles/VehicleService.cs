@@ -2,6 +2,8 @@
 {
     using RideSharing.Data;
     using RideSharing.Data.Models;
+    using RideSharing.Services.Vehicles.Models;
+    using System.Collections.Generic;
 
     public class VehicleService : IVehicleService
     {
@@ -36,6 +38,68 @@
             return this.data
                 .VehicleTypes
                 .Any(vt => vt.Id == vehicleTypeId);
+        }
+        public bool Edit(
+            int vehicleId,
+            string brand,
+            string model,
+            int yearOfCreation,
+            string lastServicingDate,
+            string imagePath,
+            int vehicleTypeId)
+        {
+            var vehicleData = this.data.Vehicles.Find(vehicleId);
+
+            if (vehicleData == null)
+            {
+                return false;
+            }
+
+            vehicleData.Brand = brand;
+            vehicleData.Model = model;
+            vehicleData.YearOfCreation = yearOfCreation;
+            vehicleData.LastServicingDate = DateTime.Parse(lastServicingDate);
+            vehicleData.ImagePath = imagePath;
+            vehicleData.VehicleTypeId = vehicleTypeId;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool IsByDriver(int vehicleId, int driverId)
+        {
+            return this.data
+                .Vehicles
+                .Any(v => v.Id == vehicleId && v.DriverId == driverId);
+        }
+
+        public VehicleDetailsServiceModel Details(int vehicleId)
+        {
+            return this.data
+                .Vehicles
+                .Where(v => v.Id == vehicleId)
+                .Select(v => new VehicleDetailsServiceModel
+                {
+                    YearOfCreation = v.YearOfCreation,
+                    VehicleTypeId = v.VehicleTypeId,
+                    DriverId = v.DriverId,
+                    DriverName = v.Driver.FirstName + "" + v.Driver.LastName,
+                    UserId = v.Driver.UserId
+                })
+                .FirstOrDefault();
+        }
+
+        public IEnumerable<VehicleVehicleTypeServiceModel> AllVehicleTypes()
+        {
+            return this.data
+                .VehicleTypes
+                .Select(vt => new VehicleVehicleTypeServiceModel
+                {
+                    Id = vt.Id,
+                    Type = vt.Type
+                })
+                .ToList();
         }
     }
 }

@@ -12,7 +12,7 @@
             this.data = data;
         }
         public int Create(string brand, string model, int yearOfCreation,
-            string lastServicingDate, string imagePath, int vehicleTypeId)
+            string lastServicingDate, string imagePath, int vehicleTypeId, int driverId)
         {
             var vehicleData = new Vehicle
             {
@@ -21,13 +21,21 @@
                 YearOfCreation = yearOfCreation,
                 LastServicingDate = DateTime.Parse(lastServicingDate),
                 ImagePath = imagePath,
-                VehicleTypeId = vehicleTypeId
+                VehicleTypeId = vehicleTypeId,
+                DriverId = driverId
             };
 
             this.data.Vehicles.Add(vehicleData);
             this.data.SaveChanges();
 
             return vehicleData.Id;
+        }
+
+        public bool VehicleTypeExists(int vehicleTypeId)
+        {
+            return this.data
+                .VehicleTypes
+                .Any(vt => vt.Id == vehicleTypeId);
         }
     }
 }

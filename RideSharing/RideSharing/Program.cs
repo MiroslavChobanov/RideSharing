@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RideSharing.Data;
 using RideSharing.Data.Models;
 using RideSharing.Infrastructure;
+using RideSharing.Services.Drivers;
 using RideSharing.Services.Vehicles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,9 @@ builder
 
 builder
     .Services.AddTransient<IVehicleService, VehicleService>();
+
+builder
+    .Services.AddTransient<IDriverService, DriverService>();
 
 builder
     .Services

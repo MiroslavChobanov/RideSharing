@@ -8,6 +8,9 @@
             int yearOfCreation,
             string lastServicingDate,
             string ImagePath,
-            int VehicleTypeId);
+            int VehicleTypeId,
+            int driverId);
+
+        public bool VehicleTypeExists(int vehicleTypeId);
     }
 }

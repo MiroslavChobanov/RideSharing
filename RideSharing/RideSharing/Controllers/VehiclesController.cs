@@ -12,6 +12,8 @@
     using RideSharing.Models.Vehicles;
     using RideSharing.Services.Vehicles;
     using RideSharing.Services.Drivers;
+    using Microsoft.AspNetCore.Authorization;
+    using RideSharing.Infrastructure;
 
     public class VehiclesController : Controller
     {
@@ -64,10 +66,20 @@
 
         // POST: Vehicles/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(CreateVehicleFormModel vehicle)
         {
-            var driverId = this.drivers.
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (driverId == 0)
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            if (!this.vehicles.VehicleTypeExists(vehicle.VehicleTypeId))
+            {
+                this.ModelState.AddModelError(nameof(vehicle.VehicleTypeId), "Vehicle type does not exist.");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -84,7 +96,7 @@
                     driverId);
 
 
-            return Redirect("/Vehicles/Index");
+            return Redirect("/Vehicles/All");
         }
 
         // GET: Vehicles/Edit/5

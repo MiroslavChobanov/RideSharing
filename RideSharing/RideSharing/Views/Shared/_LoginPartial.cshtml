@@ -1,10 +1,26 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using RideSharing.Data.Models
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IDriverService Drivers
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+    var userId = User.Id();
+    var userIsDriver = Drivers.IsDriver(userId);
+
+
+    @if (userIsDriver)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Create">Create Vehicle</a>
+            </li>
+        }
+
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Join">Join As Driver</a>
+    </li>
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>

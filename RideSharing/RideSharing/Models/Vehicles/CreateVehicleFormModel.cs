@@ -4,6 +4,8 @@
     using System.Collections.Generic;
 
     using static Data.DataConstants.Vehicle;
+    using RideSharing.Services.Vehicles.Models;
+
     public class CreateVehicleFormModel
     {
         [Required]
@@ -21,6 +23,6 @@
         public string ImagePath { get; init; }
         [Display(Name = "Vehicle Type")]
         public int VehicleTypeId { get; init; }
-        public IEnumerable<CarVehicleTypeViewModel> VehicleTypes { get; set; }
+        public IEnumerable<VehicleVehicleTypeServiceModel> VehicleTypes { get; set; }
     }
 }

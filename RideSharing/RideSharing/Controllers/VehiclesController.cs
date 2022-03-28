@@ -16,13 +16,13 @@
 
     public class VehiclesController : Controller
     {
-        private readonly RideSharingDbContext _context;
+        private readonly RideSharingDbContext data;
         private readonly IVehicleService vehicles;
         private readonly IDriverService drivers;
 
-        public VehiclesController(RideSharingDbContext context, IVehicleService vehicles, IDriverService drivers)
+        public VehiclesController(RideSharingDbContext data, IVehicleService vehicles, IDriverService drivers)
         {
-            _context = context;
+            this.data = data;
             this.vehicles = vehicles;
             this.drivers = drivers;
         }
@@ -30,7 +30,7 @@
         // GET: Vehicles
         public async Task<IActionResult> All()
         {
-            var rideSharingDbContext = _context.Vehicles.Include(v => v.Driver).Include(v => v.VehicleType);
+            var rideSharingDbContext = data.Vehicles.Include(v => v.Driver).Include(v => v.VehicleType);
             return View(await rideSharingDbContext.ToListAsync());
         }
 
@@ -41,12 +41,16 @@
             return View(vehicle);
         }
 
-        // GET: Vehicles/Create
+        [Authorize]
         public IActionResult Create()
         {
+            if (!this.drivers.IsDriver(this.User.Id()))
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
             return View(new CreateVehicleFormModel
             {
-                VehicleTypes = this.GetCarVehicleType()
+                VehicleTypes = this.vehicles.AllVehicleTypes()
             });
         }
 
@@ -84,9 +88,8 @@
 
             return Redirect("/Vehicles/All");
         }
-
         [Authorize]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             var userId = this.User.Id();
 
@@ -97,50 +100,44 @@
 
             var vehicle = this.vehicles.Details(id);
 
-            if (vehicle.UserId != userId)
-            {
-                return Unauthorized();
-            }
+            var vehicleForm = this.data.Vehicles
+                .Where(v => v.Id == id)
+                .Select(v => new CreateVehicleFormModel
+                {
+                    Brand = v.Brand,
+                    Model = v.Model,
+                    YearOfCreation = v.YearOfCreation,
+                    LastServicingDate = v.LastServicingDate.ToString(),
+                    ImagePath = v.ImagePath,
+                    VehicleTypeId = v.VehicleTypeId
+                })
+                .FirstOrDefault();
 
-            return View(vehicle);
+            vehicleForm.VehicleTypes = this.vehicles.AllVehicleTypes();
+
+            return View(vehicleForm);
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Edit(int vehicleId, CreateVehicleFormModel vehicle)
+        public IActionResult Edit(int id, CreateVehicleFormModel vehicle)
         {
-            var driverId = this.drivers.IdByUser(this.User.Id());
 
-            if (driverId == 0 )
-            {
-                return RedirectToAction(nameof(DriversController.Join), "Drivers");
-            }
-
-            if (!this.vehicles.VehicleTypeExists(vehicle.VehicleTypeId))
-            {
-                this.ModelState.AddModelError(nameof(vehicle.VehicleTypeId), "Vehicle Type does not exist.");
-            }
-
-            if (!this.vehicles.IsByDriver(vehicleId, driverId))
-            {
-                return BadRequest();
-            }
-
-            var vehicleEdited = this.vehicles.Edit(
-                vehicleId,
+            var edited = this.vehicles.Edit(
+                id,
                 vehicle.Brand,
                 vehicle.Model,
                 vehicle.YearOfCreation,
                 vehicle.LastServicingDate,
                 vehicle.ImagePath,
-                vehicle.VehicleTypeId);
+                vehicle.VehicleTypeId
+                );
 
-            if (!vehicleEdited)
+            if (!edited)
             {
                 return BadRequest();
             }
 
-            return Redirect("/Vehicles/All");
+            return RedirectToAction("All");
         }
 
         // GET: Vehicles/Delete/5
@@ -151,7 +148,7 @@
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles
+            var vehicle = await data.Vehicles
                 .Include(v => v.Driver)
                 .Include(v => v.VehicleType)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -168,22 +165,22 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
-            _context.Vehicles.Remove(vehicle);
-            await _context.SaveChangesAsync();
+            var vehicle = await data.Vehicles.FindAsync(id);
+            data.Vehicles.Remove(vehicle);
+            await data.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleExists(int id)
         {
-            return _context.Vehicles.Any(e => e.Id == id);
+            return data.Vehicles.Any(e => e.Id == id);
         }
 
-        private IEnumerable<CarVehicleTypeViewModel> GetCarVehicleType()
+        private IEnumerable<VehicleVehicleTypeViewModel> GetVehicleVehicleType()
         {
-            return this._context
+            return this.data
                 .VehicleTypes
-                .Select(vt => new CarVehicleTypeViewModel
+                .Select(vt => new VehicleVehicleTypeViewModel
             {
                 Id = vt.Id,
                 Type = vt.Type

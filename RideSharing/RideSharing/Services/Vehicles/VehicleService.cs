@@ -1,5 +1,6 @@
 ﻿namespace RideSharing.Services.Vehicles
 {
+    using Microsoft.EntityFrameworkCore;
     using RideSharing.Data;
     using RideSharing.Data.Models;
     using RideSharing.Services.Vehicles.Models;
@@ -74,20 +75,18 @@
                 .Any(v => v.Id == vehicleId && v.DriverId == driverId);
         }
 
-        public VehicleDetailsServiceModel Details(int vehicleId)
+        public VehicleDetailsServiceModel Details(int id)
         {
-            return this.data
-                .Vehicles
-                .Where(v => v.Id == vehicleId)
+            return this.data.Vehicles
+                .Where(v => v.Id == id)
                 .Select(v => new VehicleDetailsServiceModel
                 {
                     YearOfCreation = v.YearOfCreation,
                     VehicleTypeId = v.VehicleTypeId,
                     DriverId = v.DriverId,
-                    DriverName = v.Driver.FirstName + "" + v.Driver.LastName,
-                    UserId = v.Driver.UserId
+                    DriverName = v.Driver.FirstName + " " + v.Driver.LastName
                 })
-                .FirstOrDefault();
+                .First();
         }
 
         public IEnumerable<VehicleVehicleTypeServiceModel> AllVehicleTypes()

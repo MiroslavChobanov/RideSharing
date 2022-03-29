@@ -81,10 +81,12 @@
                 .Where(v => v.Id == id)
                 .Select(v => new VehicleDetailsServiceModel
                 {
+                    Id = v.Id,
                     YearOfCreation = v.YearOfCreation,
                     VehicleTypeId = v.VehicleTypeId,
                     DriverId = v.DriverId,
-                    DriverName = v.Driver.FirstName + " " + v.Driver.LastName
+                    DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
+                    ImagePath = v.ImagePath
                 })
                 .First();
         }
@@ -99,6 +101,26 @@
                     Type = vt.Type
                 })
                 .ToList();
+        }
+
+        public List<VehicleDetailsServiceModel> All()
+        {
+            return this.data
+                 .Vehicles
+                 .Select(v => new VehicleDetailsServiceModel
+                 {
+                     Id = v.Id,
+                     Brand = v.Brand,
+                     Model = v.Model,
+                     YearOfCreation = v.YearOfCreation,
+                     VehicleTypeId = v.VehicleTypeId,
+                     VehicleType = v.VehicleType,
+                     DriverId = v.DriverId,
+                     DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
+                     ImagePath = v.ImagePath
+                 })
+                 .OrderByDescending(v => v.YearOfCreation)
+                 .ToList();
         }
     }
 }

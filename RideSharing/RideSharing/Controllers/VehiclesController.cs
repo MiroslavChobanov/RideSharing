@@ -27,11 +27,11 @@
             this.drivers = drivers;
         }
 
-        // GET: Vehicles
-        public async Task<IActionResult> All()
+        public IActionResult All()
         {
-            var rideSharingDbContext = data.Vehicles.Include(v => v.Driver).Include(v => v.VehicleType);
-            return View(await rideSharingDbContext.ToListAsync());
+            var vehicles = this.vehicles.All();
+
+            return View(vehicles);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -140,7 +140,7 @@
             return RedirectToAction("All");
         }
 
-        // GET: Vehicles/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -160,9 +160,10 @@
             return View(vehicle);
         }
 
-        // POST: Vehicles/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vehicle = await data.Vehicles.FindAsync(id);

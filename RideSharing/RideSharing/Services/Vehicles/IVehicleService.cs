@@ -29,5 +29,7 @@ namespace RideSharing.Services.Vehicles
         VehicleDetailsServiceModel Details(int vehicleId);
 
         IEnumerable<VehicleVehicleTypeServiceModel> AllVehicleTypes();
+
+        public List<VehicleDetailsServiceModel> All();
     }
 }

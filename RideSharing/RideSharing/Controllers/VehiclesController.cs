@@ -107,7 +107,7 @@
                     Brand = v.Brand,
                     Model = v.Model,
                     YearOfCreation = v.YearOfCreation,
-                    LastServicingDate = v.LastServicingDate.ToString(),
+                    LastServicingDate = v.LastServicingDate,
                     ImagePath = v.ImagePath,
                     VehicleTypeId = v.VehicleTypeId
                 })

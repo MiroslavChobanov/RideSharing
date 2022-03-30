@@ -15,8 +15,11 @@
         [StringLength(ModelMaxLength, MinimumLength = ModelMinLength)]
         public string Model { get; init; }
         [Range(YearMinValue,YearMaxValue)]
+        [Display(Name = "Year Of Creation")]
         public int YearOfCreation { get; init; }
-        public string LastServicingDate { get; init; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Last Serviced On")]
+        public DateTime LastServicingDate { get; init; }
         [Required]
         [Url]
         [Display(Name = "Image Path")]

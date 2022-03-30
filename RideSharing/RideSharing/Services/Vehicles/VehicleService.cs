@@ -15,14 +15,14 @@
             this.data = data;
         }
         public int Create(string brand, string model, int yearOfCreation,
-            string lastServicingDate, string imagePath, int vehicleTypeId, int driverId)
+            DateTime lastServicingDate, string imagePath, int vehicleTypeId, int driverId)
         {
             var vehicleData = new Vehicle
             {
                 Brand = brand,
                 Model = model,
                 YearOfCreation = yearOfCreation,
-                LastServicingDate = DateTime.Parse(lastServicingDate),
+                LastServicingDate = lastServicingDate,
                 ImagePath = imagePath,
                 VehicleTypeId = vehicleTypeId,
                 DriverId = driverId
@@ -45,7 +45,7 @@
             string brand,
             string model,
             int yearOfCreation,
-            string lastServicingDate,
+            DateTime lastServicingDate,
             string imagePath,
             int vehicleTypeId)
         {
@@ -59,7 +59,7 @@
             vehicleData.Brand = brand;
             vehicleData.Model = model;
             vehicleData.YearOfCreation = yearOfCreation;
-            vehicleData.LastServicingDate = DateTime.Parse(lastServicingDate);
+            vehicleData.LastServicingDate = lastServicingDate;
             vehicleData.ImagePath = imagePath;
             vehicleData.VehicleTypeId = vehicleTypeId;
 
@@ -82,6 +82,8 @@
                 .Select(v => new VehicleDetailsServiceModel
                 {
                     Id = v.Id,
+                    Brand = v.Brand,
+                    Model = v.Model,
                     YearOfCreation = v.YearOfCreation,
                     VehicleTypeId = v.VehicleTypeId,
                     DriverId = v.DriverId,

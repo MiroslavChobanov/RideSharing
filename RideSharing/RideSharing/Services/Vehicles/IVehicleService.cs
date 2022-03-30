@@ -8,7 +8,7 @@ namespace RideSharing.Services.Vehicles
             string brand,
             string model,
             int yearOfCreation,
-            string lastServicingDate,
+            DateTime lastServicingDate,
             string ImagePath,
             int VehicleTypeId,
             int driverId);
@@ -22,7 +22,7 @@ namespace RideSharing.Services.Vehicles
             string brand,
             string model,
             int yearOfCreation,
-            string lastServicingDate,
+            DateTime lastServicingDate,
             string imagePath,
             int vehicleTypeId);
 

@@ -1,15 +1,17 @@
 ﻿@model IEnumerable<VehicleDetailsServiceModel>
-
+@{
+    ViewData["Title"] = "All Vehicles";
+}
 <div class="row">
     @foreach (var vehicle in Model)
     {
         <div class="col-md-4">
             <div class="card mb-3">
-                <img class="card-img-top" src="@vehicle.ImagePath" alt="@vehicle.Brand @vehicle.Model - @vehicle.YearOfCreation (@vehicle.VehicleType)">
+                <img class="card-img-top" src="@vehicle.ImagePath" alt="@vehicle.Brand @vehicle.Model - @vehicle.YearOfCreation">
                 <div class="card-body text-center">
-                    <h5 class="card-title text-center">@vehicle.YearOfCreation  @vehicle.Brand @vehicle.Model (@vehicle.VehicleType)</h5>
+                    <h5 class="card-title text-center">@vehicle.Brand @vehicle.Model @vehicle.YearOfCreation </h5>
                         <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-primary">View</a>
-                        <a asp-controller="Vehicles" asp-action="Edit" asp-route-id="@vehicle.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Vehicles" asp-action="Edit" asp-route-id="@vehicle.Id" class="btn btn-dark">Edit</a>
                         <a asp-controller="Vehicles" asp-action="Delete" asp-route-id="@vehicle.Id" class="btn btn-danger">Delete</a>
                 </div>
             </div>

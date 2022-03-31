@@ -119,6 +119,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(int id, CreateVehicleFormModel vehicle)
         {
 

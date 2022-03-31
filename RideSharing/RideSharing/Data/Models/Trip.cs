@@ -12,6 +12,7 @@
         public string PickUpLocation { get; set; }
         [Required]
         public string DropOffLocation { get; set; }
+        public int Seats { get; set; }
         public int CommentId { get; set; }
         public Comment Comment { get; set; }
         public int DriverId { get; set; }
@@ -21,7 +22,7 @@
         public Vehicle Vehicle { get; set; }
 
         public decimal TripCost { get; set; }
-        public double TripRating { get; set; }
+        public double? TripRating { get; set; }
 
         public IEnumerable<RateTrip> RatesTrips { get; set; } = new List<RateTrip>();
         public IEnumerable<RiderTrip> RidersTrips { get; set; } = new List<RiderTrip>();

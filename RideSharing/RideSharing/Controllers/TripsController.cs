@@ -14,17 +14,17 @@
         private readonly ITripService trips;
         private readonly IDriverService drivers;
 
-        public IActionResult All()
-        {
-            var trips = this.trips.All();
-
-            return View(trips);
-        }
         public TripsController(RideSharingDbContext data, ITripService trips, IDriverService drivers)
         {
             this.data = data;
             this.trips = trips;
             this.drivers = drivers;
+        }
+        public IActionResult All()
+        {
+            var trips = this.trips.All();
+
+            return View(trips);
         }
 
 
@@ -35,8 +35,10 @@
             {
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
-
-            return View();
+            return View(new AddTripFormModel
+            {
+                Vehicles = this.trips.AllVehicles()
+            });
         }
 
         [HttpPost]
@@ -62,7 +64,9 @@
                     trip.PickUpLocation,
                     trip.DropOffLocation,
                     trip.Seats,
-                    trip.TripCost
+                    trip.TripCost,
+                    driverId,
+                    trip.VehicleId
                     );
 
 

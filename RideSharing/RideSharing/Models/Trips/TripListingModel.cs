@@ -9,10 +9,10 @@
         public DateTime? EndTime { get; set; }
         public TimeSpan Duration { get; set; }
         [Required]
-        [StringLength(LocationMinLength, MinimumLength = LocationMaxLength)]
+        [StringLength(LocationMaxLength, MinimumLength = LocationMinLength)]
         public string PickUpLocation { get; set; }
         [Required]
-        [StringLength(LocationMinLength, MinimumLength = LocationMaxLength)]
+        [StringLength(LocationMaxLength, MinimumLength = LocationMinLength)]
         public string DropOffLocation { get; set; }
         public int Seats { get; set; }
         public decimal TripCost { get; set; }

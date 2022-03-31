@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Data;
-using RideSharing.Data.Models;
 using RideSharing.Infrastructure;
 using RideSharing.Services.Drivers;
 using RideSharing.Services.Vehicles;
+using RideSharing.Services.Trips;
 
 var builder = WebApplication.CreateBuilder(args);
 

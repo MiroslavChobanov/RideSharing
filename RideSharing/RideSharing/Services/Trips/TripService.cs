@@ -3,6 +3,7 @@
     using RideSharing.Data;
     using RideSharing.Data.Models;
     using RideSharing.Models.Trips;
+    using RideSharing.Services.Trips.Models;
 
     public class TripService : ITripService
     {
@@ -12,11 +13,11 @@
         {
             this.data = data;
         }
-        public List<TripListingModel> All()
+        public List<TripDetailsServiceModel> All()
         {
             return this.data
                  .Trips
-                 .Select(t => new TripListingModel
+                 .Select(t => new TripDetailsServiceModel
                  {
                      StartTime = t.StartTime,
                      EndTime = t.EndTime,
@@ -31,7 +32,7 @@
         }
 
         public int Add(DateTime startTime, DateTime? endTime, TimeSpan duration, string pickUpLocation,
-            string dropOffLocation, int seats, decimal tripCost )
+            string dropOffLocation, int seats, decimal tripCost, int driverId, int vehicleId)
         {
             var tripData = new Trip
             {
@@ -41,13 +42,28 @@
                 PickUpLocation = pickUpLocation,
                 DropOffLocation = dropOffLocation,
                 Seats = seats,
-                TripCost = tripCost
+                TripCost = tripCost,
+                DriverId = driverId,
+                VehicleId = vehicleId
             };
 
             this.data.Trips.Add(tripData);
             this.data.SaveChanges();
 
             return tripData.Id;
+        }
+
+        public IEnumerable<TripVehicleServiceModel> AllVehicles()
+        {
+            return this.data
+                .Vehicles
+                .Select(v => new TripVehicleServiceModel
+                {
+                    Id = v.Id,
+                    Brand = v.Brand,
+                    Model = v.Model
+                })
+                .ToList();
         }
     }
 }

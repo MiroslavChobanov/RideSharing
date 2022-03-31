@@ -1,0 +1,67 @@
+﻿@model RideSharing.Models.Trips.AddTripFormModel
+
+@{
+    ViewData["Title"] = "Add Trip";
+}
+
+<h3>Add Trip</h3>
+<hr />
+<div class="row">
+    <div class="col-6">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label" ></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickUpLocation" class="control-label"></label>
+                <input asp-for="PickUpLocation" class="form-control" value=""/>
+                <span asp-validation-for="PickUpLocation" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="DropOffLocation" class="control-label"></label>
+                <input asp-for="DropOffLocation" class="form-control" />
+                <span asp-validation-for="DropOffLocation" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="Seats" class="control-label"></label>
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="TripCost" class="control-label"></label>
+                <input asp-for="TripCost" class="form-control" />
+                <span asp-validation-for="TripCost" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="VehicleId" class="control-label"></label>
+                <select asp-for="VehicleId" class="form-control" />
+                    @foreach ( var vehicle in Model.Vehicles)
+                {
+                    <option value = "@vehicle.Id">@vehicle.Brand @vehicle.Model</option>
+                }
+            </div> 
+            
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

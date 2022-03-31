@@ -40,6 +40,9 @@ builder
     .Services.AddTransient<IDriverService, DriverService>();
 
 builder
+    .Services.AddTransient<ITripService, TripService>();
+
+builder
     .Services
     .AddControllersWithViews();
 

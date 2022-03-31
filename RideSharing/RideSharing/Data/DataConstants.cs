@@ -32,5 +32,13 @@
             public const int PhoneNumberMinLength = 6;
             public const int PhoneNumberMaxLength = 30;
         }
+
+        public class Trip
+        {
+            public const int LocationMinLength = 4;
+            public const int LocationMaxLength = 30;
+            public const double MinRating = 1;
+            public const double MaxRating = 5;
+        }
     }
 }

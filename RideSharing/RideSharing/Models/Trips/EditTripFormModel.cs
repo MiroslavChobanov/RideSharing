@@ -1,10 +1,9 @@
 ﻿namespace RideSharing.Models.Trips
 {
     using System.ComponentModel.DataAnnotations;
-
-    using static Data.DataConstants.Trip;
-    public class TripListingModel
+    public class EditTripFormModel
     {
+        public int Id { get; set; }
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
         [Display(Name = "End Time")]

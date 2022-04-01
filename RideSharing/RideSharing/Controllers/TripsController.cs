@@ -72,5 +72,66 @@
 
             return Redirect("/Trips/All");
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var trip = this.trips.Details(id);
+
+            return View(trip);
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
+
+            if (!this.drivers.IsDriver(userId))
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            var trip = this.trips.Details(id);
+
+            var tripForm = this.data.Trips
+                .Where(t => t.Id == id)
+                .Select(t => new EditTripFormModel
+                {
+                    StartTime = t.StartTime,
+                    EndTime = t.EndTime,
+                    Duration = t.Duration,
+                    PickUpLocation = t.PickUpLocation,
+                    DropOffLocation = t.DropOffLocation,
+                    Seats = t.Seats,
+                    TripCost = t.TripCost
+                })
+                .FirstOrDefault();
+
+
+            return View(tripForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, EditTripFormModel trip)
+        {
+
+            var edited = this.trips.Edit(
+                id,
+                trip.StartTime,
+                trip.EndTime,
+                trip.Duration,
+                trip.PickUpLocation,
+                trip.DropOffLocation,
+                trip.Seats,
+                trip.TripCost
+                );
+
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("All");
+        }
     }
 }

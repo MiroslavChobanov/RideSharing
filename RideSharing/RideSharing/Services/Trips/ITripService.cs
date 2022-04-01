@@ -10,5 +10,17 @@
             string dropOffLocation, int seats, decimal tripCost, int driverId, int vehicleId);
 
         public IEnumerable<TripVehicleServiceModel> AllVehicles();
+
+        TripDetailsServiceModel Details(int tripId);
+
+        bool Edit(
+            int tripId,
+            DateTime startTime,
+            DateTime? endTime,
+            TimeSpan duration,
+            string pickUpLocation,
+            string dropOffLocation,
+            int seats,
+            decimal TripCost);
     }
 }

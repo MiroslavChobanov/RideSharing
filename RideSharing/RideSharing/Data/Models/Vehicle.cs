@@ -25,6 +25,8 @@
         public int? RiderId { get; init; }
 
         public Rider Rider { get; init; }
+        [Required]
+        public bool IsDeleted { get; set; }
 
         public IEnumerable<Trip> Trips { get; init; } = new List<Trip>();
 

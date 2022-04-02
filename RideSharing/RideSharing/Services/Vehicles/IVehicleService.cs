@@ -31,5 +31,9 @@ namespace RideSharing.Services.Vehicles
         IEnumerable<VehicleVehicleTypeServiceModel> AllVehicleTypes();
 
         public List<VehicleDetailsServiceModel> All();
+
+        public VehicleDeleteServiceModel DeleteViewData(int id);
+
+        public bool Delete(int id);
     }
 }

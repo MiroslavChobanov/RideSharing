@@ -124,5 +124,34 @@
                  .OrderByDescending(v => v.YearOfCreation)
                  .ToList();
         }
+
+        public VehicleDeleteServiceModel DeleteViewData(int id)
+        {
+            return this.data.Vehicles
+                .Where(v => v.Id == id)
+                .Select(v => new VehicleDeleteServiceModel
+                {
+                    Brand = v.Brand,
+                    Model = v.Model,
+                    YearOfCreation = v.YearOfCreation,
+                    ImagePath = v.ImagePath
+                })
+                .First();
+        }
+
+        public bool Delete(int id)
+        {
+            var vehicleData = this.data.Vehicles.Find(id);
+
+            if (vehicleData == null)
+            {
+                return false;
+            }
+
+            this.data.Vehicles.Remove(vehicleData);
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }

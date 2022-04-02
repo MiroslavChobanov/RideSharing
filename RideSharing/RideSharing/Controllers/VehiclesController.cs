@@ -13,6 +13,7 @@
     using RideSharing.Services.Drivers;
     using Microsoft.AspNetCore.Authorization;
     using RideSharing.Infrastructure;
+    using RideSharing.Services.Vehicles.Models;
 
     public class VehiclesController : Controller
     {
@@ -142,35 +143,29 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var vehicle = await data.Vehicles
-                .Include(v => v.Driver)
-                .Include(v => v.VehicleType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
+            var vehicle = this.vehicles.Details(id);
 
-            return View(vehicle);
+            var vehicleForm = this.vehicles.DeleteViewData(vehicle.Id);
+
+            return View(vehicleForm);
         }
 
-        
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult Delete(int id, VehicleDeleteServiceModel vehicle)
         {
-            var vehicle = await data.Vehicles.FindAsync(id);
-            data.Vehicles.Remove(vehicle);
-            await data.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            var deleted = this.vehicles.Delete(id);
+
+            if (!deleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("All");
         }
 
         private bool VehicleExists(int id)

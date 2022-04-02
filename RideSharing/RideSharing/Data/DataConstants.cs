@@ -40,5 +40,13 @@
             public const double MinRating = 1;
             public const double MaxRating = 5;
         }
+
+        public class Rider
+        {
+            public const int NameMinLength = 4;
+            public const int NameMaxLength = 20;
+            public const int PhoneNumberMinLength = 6;
+            public const int PhoneNumberMaxLength = 30;
+        }
     }
 }

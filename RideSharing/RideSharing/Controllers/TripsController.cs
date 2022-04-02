@@ -8,18 +8,23 @@
     using RideSharing.Services.Drivers;
     using RideSharing.Infrastructure;
     using RideSharing.Services.Trips.Models;
+    using RideSharing.Data.Models;
+    using RideSharing.Services.Riders;
 
     public class TripsController : Controller
     {
         private readonly RideSharingDbContext data;
         private readonly ITripService trips;
         private readonly IDriverService drivers;
+        private readonly IRiderService riders;
 
-        public TripsController(RideSharingDbContext data, ITripService trips, IDriverService drivers)
+        public TripsController(RideSharingDbContext data, ITripService trips,
+            IDriverService drivers, IRiderService riders)
         {
             this.data = data;
             this.trips = trips;
             this.drivers = drivers;
+            this.riders = riders;
         }
         public IActionResult All()
         {
@@ -159,6 +164,31 @@
             }
 
             return RedirectToAction("All");
+        }
+
+        [Authorize]
+        public IActionResult Join(int id)
+        {
+            var riderId = this.riders.IdByUser(this.User.Id());
+
+            var riderTrip = new RiderTrip
+            {
+                RiderId = riderId,
+                TripId = id
+            };
+
+            var trip = data
+                .Trips
+                .FirstOrDefault(t => t.Id == id);
+
+            trip.Seats -= 1;
+
+
+            this.data.RiderTrips.Add(riderTrip);
+
+            this.data.SaveChanges();
+
+            return Redirect("/Trips/All");
         }
     }
 }

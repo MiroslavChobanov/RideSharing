@@ -9,7 +9,9 @@
         [Required]
         public string LastName { get; set; }
         [Required]
-        public string LuggageSize { get; set; }
+        public string Gender { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; }
         [Required]
         public string UserId { get; set; }
         public IEnumerable<RiderTrip> RidersTrips { get; init; } = new List<RiderTrip>();

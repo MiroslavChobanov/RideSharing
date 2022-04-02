@@ -22,5 +22,8 @@
             string dropOffLocation,
             int seats,
             decimal TripCost);
+
+        public TripPostponeServiceModel PostponeViewData(int id);
+        public bool Postpone(int id);
     }
 }

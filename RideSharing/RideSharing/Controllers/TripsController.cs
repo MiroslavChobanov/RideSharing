@@ -7,6 +7,7 @@
     using RideSharing.Services.Trips;
     using RideSharing.Services.Drivers;
     using RideSharing.Infrastructure;
+    using RideSharing.Services.Trips.Models;
 
     public class TripsController : Controller
     {
@@ -127,6 +128,32 @@
                 );
 
             if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("All");
+        }
+
+        [Authorize]
+        public IActionResult Postpone(int id)
+        {
+
+            var trip = this.trips.Details(id);
+
+            var tripForm = this.trips.PostponeViewData(trip.Id);
+
+            return View(tripForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Postpone(int id, TripPostponeServiceModel trip)
+        {
+
+            var deleted = this.trips.Postpone(id);
+
+            if (!deleted)
             {
                 return BadRequest();
             }

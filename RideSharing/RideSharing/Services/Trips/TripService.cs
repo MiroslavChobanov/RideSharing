@@ -116,5 +116,33 @@
 
             return true;
         }
+
+        public TripPostponeServiceModel PostponeViewData(int id)
+        {
+            return this.data.Trips
+                .Where(t => t.Id == id)
+                .Select(t => new TripPostponeServiceModel
+                {
+                    StartTime = t.StartTime,
+                    PickUpLocation = t.PickUpLocation,
+                    DropOffLocation = t.DropOffLocation
+                })
+                .First();
+        }
+
+        public bool Postpone(int id)
+        {
+            var tripData = this.data.Trips.Find(id);
+
+            if (tripData == null)
+            {
+                return false;
+            }
+
+            this.data.Trips.Remove(tripData);
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }

@@ -1,0 +1,33 @@
+﻿@using RideSharing.Services.Trips.Models
+@model TripPostponeServiceModel
+
+@{
+    ViewData["Title"] = "Postpone trip";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Are you sure you want to postpone the following trip:</h3>
+            </div>
+            <form method="post">
+                <div class="card-body">
+                    <div class="form-group text-center">
+                        <h3 class="card-title text-center">@Model.StartTime.ToString("D")</h3>
+                        <h3 class="card-title text-center">From @Model.PickUpLocation</h3>
+                        <h3 class="card-title text-center">To @Model.DropOffLocation</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <button type="submit" class="btn btn-danger float-right">Postpone</button>
+                    <a href="/Trips/All" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

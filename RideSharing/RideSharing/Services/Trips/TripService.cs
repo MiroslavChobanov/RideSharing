@@ -19,6 +19,7 @@
                  .Trips
                  .Select(t => new TripDetailsServiceModel
                  {
+                     Id = t.Id,
                      StartTime = t.StartTime,
                      EndTime = t.EndTime,
                      Duration = t.Duration,
@@ -78,6 +79,8 @@
                     Duration = t.Duration,
                     PickUpLocation = t.PickUpLocation,
                     DropOffLocation = t.DropOffLocation,
+                    DriverName = t.Driver.FirstName + " " + t.Driver.LastName,
+                    DriverVehicle = t.Vehicle.Brand + " " + t.Vehicle.Model,
                     Seats = t.Seats,
                     TripCost = t.TripCost
                 })
@@ -87,7 +90,7 @@
         public bool Edit(
             int tripId,
             DateTime startTime,
-            DateTime endTime,
+            DateTime? endTime,
             TimeSpan duration,
             string pickUpLocation,
             string dropOffLocation,

@@ -14,11 +14,11 @@
         public TimeSpan Duration { get; set; }
         [Required]
         [StringLength(LocationMaxLength, MinimumLength = LocationMinLength)]
-        [Display(Name = "Pick Up Location")]
+        [Display(Name = "Pick-Up Location")]
         public string PickUpLocation { get; set; }
         [Required]
         [StringLength(LocationMaxLength, MinimumLength = LocationMinLength)]
-        [Display(Name = "Drop Off Location")]
+        [Display(Name = "Drop-Off Location")]
         public string DropOffLocation { get; set; }
         public int Seats { get; set; }
         public int DriverId { get; set; }

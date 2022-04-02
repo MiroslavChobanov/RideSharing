@@ -1,0 +1,56 @@
+﻿@model RideSharing.Models.Trips.EditTripFormModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+        
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="StartTime"></label>
+                <input asp-for="StartTime" class="form-control" >
+                <span asp-validation-for="StartTime" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime"></label>
+                <input asp-for="EndTime" class="form-control" >
+                <span asp-validation-for="EndTime" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration"></label>
+                <input asp-for="Duration" class="form-control" ></input>
+                <span asp-validation-for="Duration" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickUpLocation"></label>
+                <input asp-for="PickUpLocation" class="form-control" >
+                <span asp-validation-for="PickUpLocation" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DropOffLocation"></label>
+                <input asp-for="DropOffLocation" class="form-control" >
+                <span asp-validation-for="DropOffLocation" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seats"></label>
+                <input asp-for="Seats" class="form-control" >
+                <span asp-validation-for="Seats" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TripCost"></label>
+                <input asp-for="TripCost" class="form-control" >
+                <span asp-validation-for="TripCost" class="small text-danger"></span>
+            </div>
+            
+
+            <input class="btn btn-primary mt-3" type="submit" value="Save" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -101,6 +101,11 @@
 
             var vehicle = this.vehicles.Details(id);
 
+            if (vehicle.DriverId != userId)
+            {
+                return Unauthorized();  
+            }
+
             var vehicleForm = this.data.Vehicles
                 .Where(v => v.Id == id)
                 .Select(v => new CreateVehicleFormModel
@@ -123,6 +128,29 @@
         [Authorize]
         public IActionResult Edit(int id, CreateVehicleFormModel vehicle)
         {
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (driverId == 0)
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            if (!this.vehicles.VehicleTypeExists(vehicle.VehicleTypeId))
+            {
+                this.ModelState.AddModelError(nameof(vehicle.VehicleTypeId), "Vehicle Type does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                vehicle.VehicleTypes = this.vehicles.AllVehicleTypes();
+
+                return View(vehicle);
+            }
+
+            if (!this.vehicles.IsByDealer(id, driverId) )
+            {
+                return BadRequest();
+            }
 
             var edited = this.vehicles.Edit(
                 id,
@@ -145,8 +173,19 @@
         [Authorize]
         public IActionResult Delete(int id)
         {
+            var userId = this.User.Id();
+
+            if (!this.drivers.IsDriver(userId))
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
 
             var vehicle = this.vehicles.Details(id);
+
+            if (vehicle.DriverId != userId)
+            {
+                return Unauthorized();
+            }
 
             var vehicleForm = this.vehicles.DeleteViewData(vehicle.Id);
 
@@ -157,6 +196,17 @@
         [Authorize]
         public IActionResult Delete(int id, VehicleDeleteServiceModel vehicle)
         {
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (driverId == 0)
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            if (!this.vehicles.IsByDealer(id, driverId))
+            {
+                return BadRequest();
+            }
 
             var deleted = this.vehicles.Delete(id);
 

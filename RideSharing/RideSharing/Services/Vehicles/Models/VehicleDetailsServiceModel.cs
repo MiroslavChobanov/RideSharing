@@ -9,7 +9,7 @@
         public int YearOfCreation { get; init; }
         public int VehicleTypeId { get; init; }
         public VehicleType VehicleType { get; init; }
-        public int DriverId { get; init; }
+        public string DriverId { get; init; }
         public string DriverName { get; init; }
 
         public string ImagePath { get; init; }

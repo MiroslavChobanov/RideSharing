@@ -5,6 +5,7 @@
     using RideSharing.Data;
     using RideSharing.Models.Drivers;
     using RideSharing.Services.Drivers;
+    using RideSharing.Services.Drivers.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -53,29 +54,29 @@
         }
 
         [Authorize]
-        public IActionResult Delete(int id)
+        public IActionResult Resign(string id)
         {
+            var driverId = this.drivers.IdByUser(id);
 
-            var driver = this.drivers.Details(id);
-
-            var driverForm = this.drivers.ResignViewData(driver.Id);
+            var driverForm = this.drivers.ResignViewData(driverId);
 
             return View(driverForm);
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Resign(int id)
+        public IActionResult Resign(string id, DriverResignServiceModel model)
         {
+            var driverId = this.drivers.IdByUser(id);
 
-            var deleted = this.drivers.Resign(id);
+            var deleted = this.drivers.Resign(driverId);
 
             if (!deleted)
             {
                 return BadRequest();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

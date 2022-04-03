@@ -35,5 +35,7 @@ namespace RideSharing.Services.Vehicles
         public VehicleDeleteServiceModel DeleteViewData(int id);
 
         public bool Delete(int id);
+
+        public bool IsByDealer(int vehicleId, int driverId);
     }
 }

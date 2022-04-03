@@ -86,12 +86,13 @@
                     Model = v.Model,
                     YearOfCreation = v.YearOfCreation,
                     VehicleTypeId = v.VehicleTypeId,
-                    DriverId = v.DriverId,
+                    DriverId = v.DriverId.ToString(),
                     DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
                     ImagePath = v.ImagePath
                 })
                 .First();
         }
+
 
         public IEnumerable<VehicleVehicleTypeServiceModel> AllVehicleTypes()
         {
@@ -117,7 +118,7 @@
                      YearOfCreation = v.YearOfCreation,
                      VehicleTypeId = v.VehicleTypeId,
                      VehicleType = v.VehicleType,
-                     DriverId = v.DriverId,
+                     DriverId = v.DriverId.ToString(),
                      DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
                      ImagePath = v.ImagePath
                  })
@@ -153,5 +154,10 @@
 
             return true;
         }
+
+        public bool IsByDealer(int vehicleId, int driverId)
+            => this.data
+                .Vehicles
+                .Any(v => v.Id == vehicleId && v.DriverId == driverId);
     }
 }

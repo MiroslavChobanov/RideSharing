@@ -1,6 +1,5 @@
 ﻿@using RideSharing.Data.Models
 @using Microsoft.AspNetCore.Identity
-@model DriverDetailsServiceModel
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IDriverService Drivers
@@ -11,7 +10,6 @@
     var userId = User.Id();
     var userIsDriver = Drivers.IsDriver(userId);
     
-
     @if (userIsDriver)
         {
             <li class="nav-item">
@@ -21,9 +19,8 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="Add">Add New Trip</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Resign" asp-route-id="@Model.Id">Quit job</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Resign" asp-route-id="@userId">Quit job</a>
             </li>
-            
         }
     else
     {

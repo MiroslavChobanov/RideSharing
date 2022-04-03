@@ -47,9 +47,35 @@
                     driver.PhoneNumber,
                     userId);
 
-            TempData[GlobalMessageKey] = "Thank you for becoming a driver!";    
+            TempData[GlobalMessageKey] = "Thank you for becoming a driver!";
 
             return RedirectToAction(nameof(VehiclesController.All), "Vehicles");
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+
+            var driver = this.drivers.Details(id);
+
+            var driverForm = this.drivers.ResignViewData(driver.Id);
+
+            return View(driverForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Resign(int id)
+        {
+
+            var deleted = this.drivers.Resign(id);
+
+            if (!deleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

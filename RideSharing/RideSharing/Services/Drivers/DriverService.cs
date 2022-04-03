@@ -2,6 +2,7 @@
 {
     using RideSharing.Data;
     using RideSharing.Data.Models;
+    using RideSharing.Services.Drivers.Models;
     public class DriverService : IDriverService
     {
         private readonly RideSharingDbContext data;
@@ -41,6 +42,46 @@
                 .Where(d => d.UserId == userId)
                 .Select(d => d.Id)
                 .FirstOrDefault();
+        }
+
+        public DriverDetailsServiceModel Details(int id)
+        {
+            return this.data.Drivers
+                .Where(d => d.Id == id)
+                .Select(d => new DriverDetailsServiceModel
+                {
+                    Id = d.Id,
+                    FirstName = d.FirstName,
+                    LastName = d.LastName
+                })
+                .First();
+        }
+
+        public DriverResignServiceModel ResignViewData(int id)
+        {
+            return this.data.Drivers
+                .Where(d => d.Id == id)
+                .Select(d => new DriverResignServiceModel
+                {
+                    FirstName = d.FirstName,
+                    LastName = d.LastName
+                })
+                .First();
+        }
+
+        public bool Resign(int id)
+        {
+            var driverData = this.data.Drivers.Find(id);
+
+            if (driverData == null)
+            {
+                return false;
+            }
+
+            this.data.Drivers.Remove(driverData);
+            this.data.SaveChanges();
+
+            return true;
         }
     }
 }

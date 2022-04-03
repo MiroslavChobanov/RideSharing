@@ -1,11 +1,15 @@
-﻿@model IEnumerable<TripDetailsServiceModel>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<TripDetailsServiceModel>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IDriverService Drivers
 @{
     ViewData["Title"] = "All Trips";
 }
 <h3>All Available Trips</h3>
 <section class="py-5">
     <div class="container">
-        <div style="padding: 5%;">
+        <div>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -21,6 +25,7 @@
                     </tr>                     
                 </thead>
                 <tbody>
+                   
                     @foreach (var trip in Model)
                     {
                             <tr>
@@ -32,10 +37,19 @@
                                 <td>@trip.Seats</td>
                                 <td>@trip.TripCost</td>
                                 <td>
-                                        <a asp-controller="Trips" asp-action="Join" asp-route-id="@trip.Id" class="btn btn-success">Join</a>
-                                        <a asp-controller="Trips" asp-action="Edit" asp-route-id="@trip.Id" class="btn btn-dark">Edit</a>
-                                        <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-primary">Info</a>
-                                        <a asp-controller="Trips" asp-action="Postpone" asp-route-id="@trip.Id" class="btn btn-danger">Postpone</a>
+
+                                    <a asp-controller="Trips" asp-action="Join" asp-route-id="@trip.Id" class="btn btn-success">Join</a>
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        var userId = User.Id();
+                                        var userIsDriver = Drivers.IsDriver(userId);
+                                        @if (userIsDriver)
+                                        {
+                                            <a asp-controller="Trips" asp-action="Edit" asp-route-id="@trip.Id" class="btn btn-dark">Edit</a>
+                                            <a asp-controller="Trips" asp-action="Postpone" asp-route-id="@trip.Id" class="btn btn-danger">Postpone</a>
+                                        }
+                                    }
+                                    <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-primary ">Info</a>
                                 </td>
                             </tr>
                     }

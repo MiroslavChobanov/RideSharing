@@ -23,13 +23,33 @@
         }
 
         [Authorize]
-        public IActionResult Join() => View();
+        public IActionResult Join() 
+        {
+            var userId = this.User.Id();
+
+            var isDriver = this.drivers.IsDriver(userId);
+
+            if (isDriver)
+            {
+                return BadRequest();
+            }
+
+            return View();
+        }
+
 
         [HttpPost]
         [Authorize]
         public IActionResult Join(JoinAsDriverFormModel driver)
         {
             var userId = this.User.Id();
+
+            var isDriver = this.drivers.IsDriver(userId);
+
+            if (isDriver)
+            {
+                return BadRequest();
+            }
 
             if (this.data.Drivers.Any(d => d.UserId == userId))
             {

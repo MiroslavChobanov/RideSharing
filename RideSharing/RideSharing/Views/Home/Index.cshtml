@@ -1,4 +1,10 @@
-﻿@{
+﻿@using RideSharing.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IDriverService Drivers
+
+@{
     ViewData["Title"] = "Welcome!";
 }
 

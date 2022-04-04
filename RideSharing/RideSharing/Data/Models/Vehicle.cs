@@ -19,7 +19,6 @@
         public int VehicleTypeId { get; set; }
         public VehicleType VehicleType { get; init; }
         public int DriverId { get; init; }
-
         public Driver Driver { get; init; }
 
         public int? RiderId { get; init; }

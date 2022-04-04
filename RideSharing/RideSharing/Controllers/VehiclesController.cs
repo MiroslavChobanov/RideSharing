@@ -101,11 +101,6 @@
 
             var vehicle = this.vehicles.Details(id);
 
-            if (vehicle.DriverId != userId)
-            {
-                return Unauthorized();  
-            }
-
             var vehicleForm = this.data.Vehicles
                 .Where(v => v.Id == id)
                 .Select(v => new CreateVehicleFormModel
@@ -181,11 +176,6 @@
             }
 
             var vehicle = this.vehicles.Details(id);
-
-            if (vehicle.DriverId != userId)
-            {
-                return Unauthorized();
-            }
 
             var vehicleForm = this.vehicles.DeleteViewData(vehicle.Id);
 

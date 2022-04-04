@@ -1,0 +1,30 @@
+﻿@using RideSharing.Models.Comments
+@model EditCommentFormModel
+
+@{
+    ViewData["Title"] = "Edit comment";
+}
+
+<div class="col-md-10 offset-md-1">
+    <div class="card card-warning">
+        <div class="card-header">
+            <h3 class="card-title">Edit comment</h3>
+        </div>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Write your comment here..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-warning float-right">Edit</button>
+                </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

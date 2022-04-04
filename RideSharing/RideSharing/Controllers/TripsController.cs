@@ -4,12 +4,14 @@
     using Microsoft.AspNetCore.Mvc;
     using RideSharing.Data;
     using RideSharing.Models.Trips;
+    using RideSharing.Models.Comments;
     using RideSharing.Services.Trips;
     using RideSharing.Services.Drivers;
     using RideSharing.Infrastructure;
     using RideSharing.Services.Trips.Models;
     using RideSharing.Data.Models;
     using RideSharing.Services.Riders;
+    using RideSharing.Services.Comments;
 
     public class TripsController : Controller
     {
@@ -17,14 +19,16 @@
         private readonly ITripService trips;
         private readonly IDriverService drivers;
         private readonly IRiderService riders;
+        private readonly ICommentService comments;
 
         public TripsController(RideSharingDbContext data, ITripService trips,
-            IDriverService drivers, IRiderService riders)
+            IDriverService drivers, IRiderService riders, ICommentService comments)
         {
             this.data = data;
             this.trips = trips;
             this.drivers = drivers;
             this.riders = riders;
+            this.comments = comments;
         }
         public IActionResult All()
         {
@@ -189,6 +193,26 @@
             this.data.SaveChanges();
 
             return Redirect("/Trips/All");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(int id, AddCommentFormModel comment)
+        {
+            var userId = this.riders.IdByUser(this.User.Id());
+
+            if (userId == 0)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            var edited = this.comments.AddCommentToTrip(
+                comment.Description,
+                DateTime.Now,
+                userId,
+                id);
+
+            return Redirect(Request.Path);
         }
     }
 }

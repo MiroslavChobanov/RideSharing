@@ -1,5 +1,9 @@
-﻿@model RideSharing.Services.Trips.Models.TripDetailsServiceModel
+﻿@using RideSharing.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
+@model RideSharing.Services.Trips.Models.TripDetailsServiceModel
 @{
     ViewData["Title"] = "Details";
 }
@@ -68,3 +72,59 @@
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark">Edit</a> 
     <a asp-action="All" class="btn btn-primary">Back to List</a>
 </div>
+
+  <div class="col-md-12 text-center">
+    </div>
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-comments"></i>
+                    All comments <b>@Model.Comments.Count</b>
+                </h3>
+            </div>
+            @if (Model.Comments.Count == 0)
+            {
+                <h2 class="text-center">There are no comments!</h2>
+            }
+            else
+            {
+                @foreach (var comment in Model.Comments)
+                {
+                    <div>
+                        <blockquote>
+                            <small>Author: <cite title="Source Title">@comment.Rider.FirstName</cite></small>
+                            <p>@comment.Description</p>
+                            <small>Published on: <cite title="Source Title">@comment.Date.ToString("f")</cite></small>
+                            @if (this.UserManager.GetUserId(User) == comment.Rider.UserId)
+                            {
+                                <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger float-right">Delete</a>
+                                <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning float-right">Edit</a>
+                            }
+                            @if (comment.LastEditedOn != null)
+                            {
+                                <br>
+
+                                <small>Last edited on: <cite title="Source Title">@comment.LastEditedOn.Value.ToString("f")</cite></small>
+                            }
+                        </blockquote>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    @if (this.SignInManager.IsSignedIn(User))
+    {
+        <partial name="_PartialAddComment" />
+    }
+    else
+    {
+        <div class="col-md-10 offset-md-1">
+            <h3 class="text-center">To comment, <a asp-area="Identity" asp-page="/Account/Login">login</a> or <a asp-area="Identity" asp-page="/Account/Register">register</a>.</h3>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

@@ -6,6 +6,7 @@ using RideSharing.Services.Drivers;
 using RideSharing.Services.Vehicles;
 using RideSharing.Services.Trips;
 using RideSharing.Services.Riders;
+using RideSharing.Services.Comments;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,9 @@ builder
 
 builder
     .Services.AddTransient<IRiderService, RiderService>();
+
+builder
+    .Services.AddTransient<ICommentService, CommentService>();
 
 builder
     .Services

@@ -2,6 +2,7 @@
 {
     using RideSharing.Data;
     using RideSharing.Data.Models;
+    using RideSharing.Models.Comments;
     using RideSharing.Models.Trips;
     using RideSharing.Services.Trips.Models;
 
@@ -82,8 +83,21 @@
                     DriverName = t.Driver.FirstName + " " + t.Driver.LastName,
                     DriverVehicle = t.Vehicle.Brand + " " + t.Vehicle.Model,
                     Seats = t.Seats,
-                    TripCost = t.TripCost
-                })
+                    TripCost = t.TripCost,
+                    Comments = t.Comments
+                        .Select(c => new CommentListingModel
+                        {
+                            Id = c.Id,
+                            Description = c.Description,
+                            Date = c.Date,
+                            LastEditedOn = c.LastEditedOn,
+                            TripId = c.TripId,
+                            RiderId = c.RiderId,
+                            Rider = c.Rider,
+                        })
+                            .OrderByDescending(x => x.Date)
+                            .ToList(),
+                        })
                 .First();
         }
 

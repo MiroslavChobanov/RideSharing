@@ -1,7 +1,8 @@
 ﻿namespace RideSharing.Services.Trips.Models
 {
     using System.ComponentModel.DataAnnotations;
-    public class TripDetailsServiceModel
+    using RideSharing.Models.Comments;
+    public class TripDetailsServiceModel : AddCommentFormModel
     {
         public int Id { get; init; }
         [Display(Name = "Start Time")]
@@ -20,5 +21,7 @@
         public int Seats { get; init; }
         [Display(Name = "Trip Cost")]
         public decimal TripCost { get; init; }
+
+        public ICollection<CommentListingModel> Comments { get; set; }
     }
 }

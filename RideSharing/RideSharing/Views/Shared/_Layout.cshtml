@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject IDriverService Drivers
+@inject IRiderService Riders
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,17 +28,26 @@
                         {
                             var userId = User.Id();
                             var userIsDriver = Drivers.IsDriver(userId);
+                            var userIsRider = Riders.IsRider(userId);
 
                             if (userIsDriver)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="All">All available vehicles</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="MyTrips">My trips</a>
+                                </li>
                             } 
+                            
+                            if (userIsRider)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="All">Future trips</a>
+                                </li>
+                            }
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="All">Future trips</a>
-                        </li>
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

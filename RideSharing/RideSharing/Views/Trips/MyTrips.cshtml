@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<TripDetailsServiceModel>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IDriverService Drivers
+@{
+    ViewData["Title"] = "My Trips";
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any trips yet!</h2>
+}
+<h3>My Trips</h3>
+<section class="py-5">
+    <div class="container">
+        <div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Start Time</th>
+                        <th scope="col">End Time</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Pick-Up Location</th>
+                        <th scope="col">Drop-Off Location</th>
+                        <th scope="col">Seats</th>
+                        <th scope="col">Trip Cost</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>                     
+                </thead>
+                <tbody>
+                   
+                    @foreach (var trip in Model)
+                    {
+                            <tr>
+                                <td>@trip.StartTime</td>
+                                <td>@trip.EndTime</td>
+                                <td>@trip.Duration</td>
+                                <td>@trip.PickUpLocation</td>
+                                <td>@trip.DropOffLocation</td>
+                                <td>@trip.Seats</td>
+                                <td>@trip.TripCost</td>
+                                <td>
+                                     <a asp-controller="Trips" asp-action="Edit" asp-route-id="@trip.Id" class="btn btn-dark">Edit</a>
+                                     <a asp-controller="Trips" asp-action="Postpone" asp-route-id="@trip.Id" class="btn btn-danger">Postpone</a>
+                                     <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-primary ">Info</a>
+                                </td>
+                            </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

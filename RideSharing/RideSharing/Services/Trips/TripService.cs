@@ -158,5 +158,43 @@
 
             return true;
         }
+
+        public IEnumerable<TripDetailsServiceModel> ByUser(string userId)
+        {
+            return GetTrips(this.data
+                .Trips
+                .Where(c => c.Driver.UserId == userId));
+        }
+
+        private IEnumerable<TripDetailsServiceModel> GetTrips(IQueryable<Trip> tripQuery)
+        {
+            return tripQuery
+                .Select(t => new TripDetailsServiceModel
+                {
+                    Id = t.Id,
+                    StartTime = t.StartTime,
+                    EndTime = t.EndTime,
+                    Duration = t.Duration,
+                    PickUpLocation = t.PickUpLocation,
+                    DropOffLocation = t.DropOffLocation,
+                    DriverVehicle = t.Vehicle.Brand + " " + t.Vehicle.Model,
+                    Seats = t.Seats,
+                    TripCost = t.TripCost,
+                    Comments = t.Comments
+                        .Select(c => new CommentListingModel
+                    {
+                        Id = c.Id,
+                        Description = c.Description,
+                        Date = c.Date,
+                        LastEditedOn = c.LastEditedOn,
+                        TripId = c.TripId,
+                        RiderId = c.RiderId,
+                        Rider = c.Rider,
+                    })
+                            .OrderByDescending(x => x.Date)
+                            .ToList(),
+                })
+                .ToList();
+        }
     }
 }

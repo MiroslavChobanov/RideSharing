@@ -1,5 +1,6 @@
 ﻿namespace RideSharing.Services.Trips
 {
+    using RideSharing.Data.Models;
     using RideSharing.Models.Trips;
     using RideSharing.Services.Trips.Models;
     public interface ITripService
@@ -25,5 +26,8 @@
 
         public TripPostponeServiceModel PostponeViewData(int id);
         public bool Postpone(int id);
+
+        IEnumerable<TripDetailsServiceModel> ByUser(string userId);
+
     }
 }

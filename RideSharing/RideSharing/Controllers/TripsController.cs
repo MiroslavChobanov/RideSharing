@@ -37,6 +37,14 @@
             return View(trips);
         }
 
+        [Authorize]
+        public IActionResult MyTrips()
+        {
+            var myTrips = this.trips.ByUser(this.User.Id());
+
+            return View(myTrips);
+        }
+
 
         [Authorize]
         public IActionResult Add()

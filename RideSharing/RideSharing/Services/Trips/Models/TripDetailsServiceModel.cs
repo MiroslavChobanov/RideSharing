@@ -1,6 +1,7 @@
 ﻿namespace RideSharing.Services.Trips.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using RideSharing.Data.Models;
     using RideSharing.Models.Comments;
     public class TripDetailsServiceModel : AddCommentFormModel
     {
@@ -14,6 +15,9 @@
         public string PickUpLocation { get; init; }
         [Display(Name = "Drop-Off Location")]
         public string DropOffLocation { get; init; }
+        
+        public int DriverId { get; init; }
+        public Driver Driver { get; init; }
         [Display(Name = "Driver Name")]
         public string DriverName { get; init; }
         [Display(Name = "Driver Vehicle")]

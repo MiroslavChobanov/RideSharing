@@ -40,5 +40,29 @@
                 .Select(r => r.Id)
                 .FirstOrDefault();
         }
+
+        public bool Edit(
+            int riderId,
+            string firstName,
+            string lastName,
+            string gender,
+            string phoneNumber)
+        {
+            var riderData = this.data.Drivers.Find(riderId);
+
+            if (riderData == null)
+            {
+                return false;
+            }
+
+            riderData.FirstName = firstName;
+            riderData.LastName = lastName;
+            riderData.Gender = gender;
+            riderData.PhoneNumber = phoneNumber;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }

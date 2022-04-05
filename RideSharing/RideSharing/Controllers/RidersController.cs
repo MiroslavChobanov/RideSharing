@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
     using RideSharing.Infrastructure;
+    using RideSharing.Services.Riders.Models;
 
     public class RidersController : Controller
     {
@@ -47,6 +48,56 @@
             return RedirectToAction(nameof(TripsController.All), "Trips");
         }
 
+        [Authorize]
+        public IActionResult EditInformation(int id)
+        {
+            var riderId = this.riders.IdByUser(this.User.Id());
 
+            if (riderId == 0)
+            {
+                return RedirectToAction(nameof(RidersController.Join), "Riders");
+            }
+
+            var riderForm = this.data.Riders
+                .Where(r => r.Id == id)
+                .Select(r => new RiderEditInformationServiceModel
+                {
+                    FirstName = r.FirstName,
+                    LastName = r.LastName,
+                    Gender = r.Gender,
+                    PhoneNumber = r.PhoneNumber
+                })
+                .FirstOrDefault();
+
+
+            return View(riderForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditInformation(int id, RiderEditInformationServiceModel rider)
+        {
+            var riderId = this.riders.IdByUser(this.User.Id());
+
+            if (riderId == 0)
+            {
+                return RedirectToAction(nameof(RidersController.Join), "Riders");
+            }
+
+            var edited = this.riders.Edit(
+                id,
+                rider.FirstName,
+                rider.LastName,
+                rider.Gender,
+                rider.PhoneNumber
+                );
+
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
     }
 }

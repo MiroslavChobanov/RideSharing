@@ -3,20 +3,47 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IDriverService Drivers
+@inject IRiderService Riders
 
 @{
     ViewData["Title"] = "Welcome!";
 }
 
 <div class="jumbotron">
+
+
         <h1 class="display-4">Welcome to the best place for mutual travelling!</h1>
         <p class="lead">Want to reduce the money you spend on travelling?</p>
         <p class="lead">Want to have some company while on the road?</p>
         <p class="lead">Then you are in the right place! Click the button below to get started!</p>
         <hr class="my-4">
         <p class="lead">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var userId = User.Id();
+                var userIsDriver = Drivers.IsDriver(userId);
+                var userIsRider = Riders.IsRider(userId);
+
+                @if(!userIsDriver && !userIsRider)
+                {
+                    <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
+                    <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Join As Rider</a>
+                }
+                else if(!userIsDriver && userIsRider)
+                {
+                    <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
+                }
+                else if(userIsDriver && !userIsRider)
+                {
+                    <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Join As Rider</a>
+            }
+        }
+        else
+        {
             <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
             <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Join As Rider</a>
+        }
+            
         </p>
         <img src="https://icdn.digitaltrends.com/image/digitaltrends/best-ridesharing-apps-scoop-500x500.jpg" class="img-fluid" alt="Responsive image">
     </div>

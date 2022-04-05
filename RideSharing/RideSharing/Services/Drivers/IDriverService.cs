@@ -19,5 +19,13 @@
         public DriverResignServiceModel ResignViewData(int id);
 
         public bool Resign(int id);
+
+        bool Edit(
+            int driverId,
+            string firstName,
+            string lastName,
+            string gender,
+            string phoneNumber
+            );
     }
 }

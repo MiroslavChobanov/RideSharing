@@ -3,13 +3,19 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IDriverService Drivers
+@inject IRiderService Riders
+
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     var userId = User.Id();
     var userIsDriver = Drivers.IsDriver(userId);
-    
+    var userIsRider = Riders.IsRider(userId);
+
+    var driverId = Drivers.IdByUser(userId);
+        var riderId = Riders.IdByUser(userId);
+
     @if (userIsDriver)
         {
             <li class="nav-item">
@@ -21,6 +27,9 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Resign" asp-route-id="@userId">Quit job</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="EditInformation" asp-route-id="@driverId">Edit Information</a>
+            </li>
         }
     else
     {
@@ -28,8 +37,14 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Join">Join As Driver</a>
         </li>
     }
-    
-    <li class="nav-item">
+
+        @if (userIsRider)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Riders" asp-action="EditInformation" asp-route-id="@riderId">Edit Information</a>
+            </li>
+        }
+        <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">

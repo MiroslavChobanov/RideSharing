@@ -83,5 +83,29 @@
 
             return true;
         }
+
+        public bool Edit(
+            int driverId,
+            string firstName,
+            string lastName,
+            string gender,
+            string phoneNumber)
+        {
+            var driverData = this.data.Drivers.Find(driverId);
+
+            if (driverData == null)
+            {
+                return false;
+            }
+
+            driverData.FirstName = firstName;
+            driverData.LastName = lastName;
+            driverData.Gender = gender;
+            driverData.PhoneNumber = phoneNumber;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }

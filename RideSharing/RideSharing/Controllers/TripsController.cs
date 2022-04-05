@@ -187,6 +187,11 @@
 
             trip.Seats -= 1;
 
+            if (trip.Seats == 0)
+            {
+                return BadRequest();
+            }
+
 
             this.data.RiderTrips.Add(riderTrip);
 

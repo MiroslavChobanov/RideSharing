@@ -98,5 +98,57 @@
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
+        [Authorize]
+        public IActionResult EditInformation(int id)
+        {
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (driverId == 0)
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            var driverForm = this.data.Drivers
+                .Where(d => d.Id == id)
+                .Select(d => new DriverEditInformationServiceModel
+                {
+                    FirstName = d.FirstName,
+                    LastName = d.LastName,
+                    Gender = d.Gender,
+                    PhoneNumber = d.PhoneNumber
+                })
+                .FirstOrDefault();
+
+
+            return View(driverForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditInformation(int id, DriverEditInformationServiceModel driver)
+        {
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (driverId == 0)
+            {
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            var edited = this.drivers.Edit(
+                id,
+                driver.FirstName,
+                driver.LastName,
+                driver.Gender,
+                driver.PhoneNumber
+                );
+
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
     }
 }

@@ -11,5 +11,12 @@
         public bool IsRider(string userId);
 
         public int IdByUser(string userId);
+
+        public bool Edit(
+            int riderId,
+            string firstName,
+            string lastName,
+            string gender,
+            string phoneNumber);
     }
 }

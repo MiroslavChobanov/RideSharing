@@ -1,0 +1,111 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RideSharing.Models.Users
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model UserDriverDetailsModel
+
+@{
+    ViewBag.Title = $"{Model.Username}'s profile";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <h3 class="profile-username text-center">@Model.Username</h3>
+                        <p class="text-muted text-center">Driver</p>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Trips:</b> <a class="float-right">@Model.Trips.Count</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Vehicles:</b> <a class="float-right">@Model.Vehicles.Count</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">User's email</h3>
+                        </div>
+                        <div class="card-body">
+                            <strong><i class="far fa-file-alt mr-1"></i>@Model.Email</strong>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">User's email</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <strong>To see the email <a asp-area="Identity" asp-page="/Account/Login">login</a> or <a asp-area="Identity" asp-page="/Account/Register">register</a>.</strong>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active text-center" id="timeline">
+                                @if (this.User.Identity.Name == Model.Username)
+                                {
+                                    <h3>Welcome to your profile!</h3>
+                                }
+                                else
+                                {
+                                    <h3>Welcome to @Model.Username!'s profile</h3>
+                                }
+                            </div>
+
+                            </div>
+                    </div>
+                    <h3> Your vehicles:</h3>
+                            <div class="tab-pane" id="activity">
+                            
+                                <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">YearOfCreation</th>
+                        <th scope="col"></th>
+                    </tr>                     
+                </thead>
+                <tbody>
+                   
+                    @foreach (var vehicle in Model.Vehicles)
+                    {
+                            <tr>
+                                <td>@vehicle.Brand</td>
+                                <td>@vehicle.Model</td>
+                                <td>@vehicle.YearOfCreation</td>
+                                <td>
+                                    <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-success">View</a>
+                                </td>
+                            </tr>
+                    }
+
+                </tbody>
+            </table>
+                            
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

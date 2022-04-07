@@ -9,8 +9,6 @@
         public DbSet<Comment> Comments { get; init; }
         public DbSet<Driver> Drivers { get; init; }
         public DbSet<Payment> Payments { get; init; }
-        public DbSet<Rate> Rates { get; init; }
-        public DbSet<RateTrip> RateTrips { get; init; }
         public DbSet<Rider> Riders { get; init; }
         public DbSet<RiderTrip> RiderTrips { get; init; }
         public DbSet<Trip> Trips { get; init; }
@@ -24,19 +22,6 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-                .Entity<RateTrip>()
-                .HasKey(rt => new { rt.RateId, rt.TripId });
-            modelBuilder
-                .Entity<RateTrip>()
-                .HasOne(rt => rt.Rate)
-                .WithMany(r => r.RatesTrips)
-                .HasForeignKey(rt => rt.RateId);
-            modelBuilder
-                .Entity<RateTrip>()
-                .HasOne(rt => rt.Trip)
-                .WithMany(t => t.RatesTrips)
-                .HasForeignKey(rt => rt.TripId);
 
             modelBuilder
                 .Entity<RiderTrip>()

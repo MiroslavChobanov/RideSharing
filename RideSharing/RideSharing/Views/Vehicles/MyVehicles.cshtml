@@ -1,7 +1,20 @@
 ﻿@model IEnumerable<VehicleDetailsServiceModel>
 @{
-    ViewData["Title"] = "All Vehicles";
+    ViewData["Title"] = "My vehicles";
 }
+
+<div class="col-md-12">
+<div class="card">
+    @if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any vehicles yet!</h2>
+    <h2 class="text-center">Want to add your first one?</h2>
+    <h2 class="text-center">Click the button below.</h2>
+    <a asp-controller="Vehicles" asp-action="Add" class="btn btn-primary text-center">Add vehicle</a>
+}
+</div>
+</div>
+
 
 <div class="row">
     @foreach (var vehicle in Model)

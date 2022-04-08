@@ -1,14 +1,14 @@
-﻿@model RideSharing.Models.Vehicles.CreateVehicleFormModel
+﻿@model RideSharing.Models.Vehicles.AddVehicleFormModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add";
 }
 
-<h3>Create Vehicle</h3>
+<h3>Add Vehicle</h3>
 <hr />
 <div class="row">
     <div class="col-6">
-        <form asp-action="Create">
+        <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Brand" class="control-label" ></label>
@@ -44,7 +44,7 @@
                 }
             </div> 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add" class="btn btn-primary" />
             </div>
         </form>
     </div>

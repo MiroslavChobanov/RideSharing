@@ -14,7 +14,7 @@
         {
             this.data = data;
         }
-        public int Create(string brand, string model, int yearOfCreation,
+        public int Add(string brand, string model, int yearOfCreation,
             DateTime lastServicingDate, string imagePath, int vehicleTypeId, int driverId)
         {
             var vehicleData = new Vehicle
@@ -156,8 +156,35 @@
         }
 
         public bool IsByDealer(int vehicleId, int driverId)
-            => this.data
+        {
+            return this.data
                 .Vehicles
                 .Any(v => v.Id == vehicleId && v.DriverId == driverId);
+        }
+
+        public IEnumerable<VehicleDetailsServiceModel> ByUser(string userId)
+        {
+            return GetVehicles(this.data
+                .Vehicles
+                .Where(v => v.Driver.UserId == userId));
+        }
+
+        private IEnumerable<VehicleDetailsServiceModel> GetVehicles(IQueryable<Vehicle> vehicleQuery)
+        {
+            return vehicleQuery
+                .Select(v => new VehicleDetailsServiceModel
+                {
+                    Id = v.Id,
+                    Brand = v.Brand,
+                    Model = v.Model,
+                    YearOfCreation = v.YearOfCreation,
+                    VehicleTypeId = v.VehicleTypeId,
+                    VehicleType = v.VehicleType,
+                    DriverId = v.DriverId.ToString(),
+                    DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
+                    ImagePath = v.ImagePath
+                })
+                .ToList();
+        }
     }
 }

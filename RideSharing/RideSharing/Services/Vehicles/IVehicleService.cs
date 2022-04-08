@@ -4,7 +4,7 @@ namespace RideSharing.Services.Vehicles
 {
     public interface IVehicleService
     {
-        int Create(
+        int Add(
             string brand,
             string model,
             int yearOfCreation,
@@ -37,5 +37,7 @@ namespace RideSharing.Services.Vehicles
         public bool Delete(int id);
 
         public bool IsByDealer(int vehicleId, int driverId);
+
+        IEnumerable<VehicleDetailsServiceModel> ByUser(string userId);
     }
 }

@@ -74,36 +74,45 @@
 
                             </div>
                     </div>
-                    <h3> Your vehicles:</h3>
-                            <div class="tab-pane" id="activity">
-                            
-                                <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">YearOfCreation</th>
-                        <th scope="col"></th>
-                    </tr>                     
-                </thead>
-                <tbody>
-                   
-                    @foreach (var vehicle in Model.Vehicles)
+                    @if (@Model.Vehicles.Count == 0)
                     {
-                            <tr>
-                                <td>@vehicle.Brand</td>
-                                <td>@vehicle.Model</td>
-                                <td>@vehicle.YearOfCreation</td>
-                                <td>
-                                    <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-success">View</a>
-                                </td>
-                            </tr>
+                        <h3> You do not have any vehicles yet!</h3>
+                        <a asp-controller="Vehicles" asp-action="Add" class="btn btn-primary">Add Vehicle</a>
                     }
+                    else
+                    {
+                        <h3> Your vehicles:</h3>
+                        <div class="tab-pane" id="activity">
 
-                </tbody>
-            </table>
-                            
-                            </div>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Brand</th>
+                                        <th scope="col">Model</th>
+                                        <th scope="col">YearOfCreation</th>
+                                        <th scope="col"></th>
+                                    </tr>                     
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var vehicle in Model.Vehicles)
+                                    {
+                                        <tr>
+                                            <td>@vehicle.Brand</td>
+                                            <td>@vehicle.Model</td>
+                                            <td>@vehicle.YearOfCreation</td>
+                                            <td>
+                                                <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-success">View</a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    }
+                        
                 </div>
             </div>
         </div>

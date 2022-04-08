@@ -6,6 +6,7 @@
     using RideSharing.Models.Drivers;
     using RideSharing.Services.Drivers;
     using RideSharing.Services.Drivers.Models;
+    using RideSharing.Services.Vehicles;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@
             this.data = data;
             this.drivers = drivers;
         }
+
 
         [Authorize]
         public IActionResult Join() 
@@ -70,7 +72,7 @@
 
             TempData[GlobalMessageKey] = "Thank you for becoming a driver!";
 
-            return RedirectToAction(nameof(VehiclesController.All), "Vehicles");
+            return RedirectToAction(nameof(VehiclesController.MyVehicles), "Vehicles");
         }
 
         [Authorize]

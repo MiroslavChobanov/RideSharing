@@ -1,4 +1,4 @@
-﻿@model RideSharing.Models.Vehicles.CreateVehicleFormModel
+﻿@model RideSharing.Models.Vehicles.AddVehicleFormModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="YearOfCreation"></label>
-                <input asp-for="YearOfCreation" class="form-control" placeholder="Year of creation here..."></input>
+                <input asp-for="YearOfCreation" class="form-control" placeholder="Year of creation here...">
                 <span asp-validation-for="YearOfCreation" class="small text-danger"></span>
             </div>
             <div class="form-group">

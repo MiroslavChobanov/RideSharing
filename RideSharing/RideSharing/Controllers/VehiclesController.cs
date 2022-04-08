@@ -1,12 +1,9 @@
 ﻿namespace RideSharing.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
     using RideSharing.Data;
     using RideSharing.Models.Vehicles;
     using RideSharing.Services.Vehicles;
@@ -15,6 +12,7 @@
     using RideSharing.Infrastructure;
     using RideSharing.Services.Vehicles.Models;
 
+    using static WebConstants;
     public class VehiclesController : Controller
     {
         private readonly RideSharingDbContext data;
@@ -28,11 +26,12 @@
             this.drivers = drivers;
         }
 
-        public IActionResult All()
+        [Authorize]
+        public IActionResult MyVehicles()
         {
-            var vehicles = this.vehicles.All();
+            var myVehicles = this.vehicles.ByUser(this.User.Id());
 
-            return View(vehicles);
+            return View(myVehicles);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -43,22 +42,21 @@
         }
 
         [Authorize]
-        public IActionResult Create()
+        public IActionResult Add()
         {
             if (!this.drivers.IsDriver(this.User.Id()))
             {
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
-            return View(new CreateVehicleFormModel
+            return View(new AddVehicleFormModel
             {
                 VehicleTypes = this.vehicles.AllVehicleTypes()
             });
         }
 
-        // POST: Vehicles/Create
         [HttpPost]
         [Authorize]
-        public IActionResult Create(CreateVehicleFormModel vehicle)
+        public IActionResult Add(AddVehicleFormModel vehicle)
         {
             var driverId = this.drivers.IdByUser(this.User.Id());
 
@@ -77,7 +75,7 @@
                 return BadRequest();
             }
 
-            var vehicleId = this.vehicles.Create(
+            var vehicleId = this.vehicles.Add(
                     vehicle.Brand,
                     vehicle.Model,
                     vehicle.YearOfCreation,
@@ -85,9 +83,9 @@
                     vehicle.ImagePath,
                     vehicle.VehicleTypeId,
                     driverId);
+            TempData[GlobalMessageKey] = "You car was added successfully!";
 
-
-            return Redirect("/Vehicles/All");
+            return Redirect("/Vehicles/MyVehicles");
         }
         [Authorize]
         public IActionResult Edit(int id)
@@ -103,7 +101,7 @@
 
             var vehicleForm = this.data.Vehicles
                 .Where(v => v.Id == id)
-                .Select(v => new CreateVehicleFormModel
+                .Select(v => new AddVehicleFormModel
                 {
                     Brand = v.Brand,
                     Model = v.Model,
@@ -121,7 +119,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(int id, CreateVehicleFormModel vehicle)
+        public IActionResult Edit(int id, AddVehicleFormModel vehicle)
         {
             var driverId = this.drivers.IdByUser(this.User.Id());
 

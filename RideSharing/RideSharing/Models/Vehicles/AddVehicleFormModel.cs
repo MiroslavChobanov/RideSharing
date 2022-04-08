@@ -6,7 +6,7 @@
     using static Data.DataConstants.Vehicle;
     using RideSharing.Services.Vehicles.Models;
 
-    public class CreateVehicleFormModel
+    public class AddVehicleFormModel
     {
         [Required]
         [StringLength(BrandMaxLength, MinimumLength = BrandMinLength)]

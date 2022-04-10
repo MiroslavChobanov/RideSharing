@@ -18,7 +18,7 @@
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult RiderProfile(string id)
         {
 
@@ -26,7 +26,7 @@
 
             return View(detailsForm);
         }
-
+        [Authorize]
         public IActionResult DriverProfile(string id)
         {
 

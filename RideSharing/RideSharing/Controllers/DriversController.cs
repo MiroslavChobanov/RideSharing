@@ -3,14 +3,12 @@
     using System.Linq;
     using RideSharing.Infrastructure;
     using RideSharing.Data;
+    using RideSharing.Constants;
     using RideSharing.Models.Drivers;
     using RideSharing.Services.Drivers;
     using RideSharing.Services.Drivers.Models;
-    using RideSharing.Services.Vehicles;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-
-    using static WebConstants;
 
     public class DriversController : Controller
     {
@@ -33,7 +31,8 @@
 
             if (isDriver)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "You are already a driver!";
+                return Redirect(Request.Path);
             }
 
             return View();
@@ -50,12 +49,8 @@
 
             if (isDriver)
             {
-                return BadRequest();
-            }
-
-            if (this.data.Drivers.Any(d => d.UserId == userId))
-            {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "You are already a driver!";
+                return Redirect(Request.Path);
             }
 
             if (!ModelState.IsValid)
@@ -70,7 +65,7 @@
                     driver.PhoneNumber,
                     userId);
 
-            TempData[GlobalMessageKey] = "Thank you for becoming a driver!";
+            TempData[MessageConstants.SuccessMessage] = "You are now a driver!";
 
             return RedirectToAction(nameof(VehiclesController.MyVehicles), "Vehicles");
         }
@@ -95,8 +90,11 @@
 
             if (!deleted)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
+
+            TempData[MessageConstants.SuccessMessage] = "You have resigned!";
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -108,6 +106,7 @@
 
             if (driverId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
@@ -134,6 +133,7 @@
 
             if (driverId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
@@ -147,8 +147,11 @@
 
             if (!edited)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
+
+            TempData[MessageConstants.SuccessMessage] = "You have successfully edited your information!";
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

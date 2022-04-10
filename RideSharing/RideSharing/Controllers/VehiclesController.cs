@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using RideSharing.Data;
+    using RideSharing.Constants;
     using RideSharing.Models.Vehicles;
     using RideSharing.Services.Vehicles;
     using RideSharing.Services.Drivers;
@@ -12,7 +13,6 @@
     using RideSharing.Infrastructure;
     using RideSharing.Services.Vehicles.Models;
 
-    using static WebConstants;
     public class VehiclesController : Controller
     {
         private readonly RideSharingDbContext data;
@@ -46,6 +46,7 @@
         {
             if (!this.drivers.IsDriver(this.User.Id()))
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
             return View(new AddVehicleFormModel
@@ -62,12 +63,13 @@
 
             if (driverId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
             if (!this.vehicles.VehicleTypeExists(vehicle.VehicleTypeId))
             {
-                this.ModelState.AddModelError(nameof(vehicle.VehicleTypeId), "Vehicle type does not exist.");
+                TempData[MessageConstants.ErrorMessage] = "Vehicle type does not exist!";
             }
 
             if (!ModelState.IsValid)
@@ -83,9 +85,10 @@
                     vehicle.ImagePath,
                     vehicle.VehicleTypeId,
                     driverId);
-            TempData[GlobalMessageKey] = "You car was added successfully!";
 
-            return Redirect("/Vehicles/MyVehicles");
+            TempData[MessageConstants.SuccessMessage] = "Your vehicle was added successfully!";
+
+            return RedirectToAction("MyVehicles");
         }
         [Authorize]
         public IActionResult Edit(int id)
@@ -94,6 +97,7 @@
 
             if (!this.drivers.IsDriver(userId))
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
@@ -125,12 +129,13 @@
 
             if (driverId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
             if (!this.vehicles.VehicleTypeExists(vehicle.VehicleTypeId))
             {
-                this.ModelState.AddModelError(nameof(vehicle.VehicleTypeId), "Vehicle Type does not exist.");
+                TempData[MessageConstants.ErrorMessage] = "Vehicle type does not exist!";
             }
 
             if (!ModelState.IsValid)
@@ -142,7 +147,8 @@
 
             if (!this.vehicles.IsByDealer(id, driverId) )
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "This is not your vehicle!";
+                return Redirect(Request.Path);
             }
 
             var edited = this.vehicles.Edit(
@@ -157,10 +163,13 @@
 
             if (!edited)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
 
-            return RedirectToAction("All");
+            TempData[MessageConstants.SuccessMessage] = "Your vehicle was edited successfully!";
+
+            return RedirectToAction("MyVehicles");
         }
 
         [Authorize]
@@ -170,6 +179,7 @@
 
             if (!this.drivers.IsDriver(userId))
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
@@ -188,22 +198,27 @@
 
             if (driverId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
             if (!this.vehicles.IsByDealer(id, driverId))
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "This is not your vehicle!";
+                return Redirect(Request.Path);
             }
 
             var deleted = this.vehicles.Delete(id);
 
             if (!deleted)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
 
-            return RedirectToAction("All");
+            TempData[MessageConstants.SuccessMessage] = "Your vehicle was deleted successfully!";
+
+            return RedirectToAction("MyVehicles");
         }
 
         private bool VehicleExists(int id)

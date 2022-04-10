@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using RideSharing.Infrastructure;
     using RideSharing.Models.Comments;
+    using RideSharing.Constants;
 
     public class CommentsController : Controller
     {
@@ -28,12 +29,14 @@
 
             if (riderId == 0)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
+                return RedirectToAction(nameof(RidersController.Join), "Riders");
             }
 
             if (!this.comments.IsByRider(id, riderId))
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "This is not your comment!";
+                return Redirect(Request.Path);
             }
 
             var commentForm = this.comments.EditViewData(id);
@@ -50,7 +53,8 @@
 
             if (!this.comments.IsByRider(id, riderId))
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "This is not your comment!";
+                return Redirect(Request.Path);
             }
 
             var edited = this.comments.Edit(
@@ -61,8 +65,11 @@
 
             if (!edited)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
+
+            TempData[MessageConstants.SuccessMessage] = "You have successfully edited your comment!";
 
             return Redirect($"../../Trips/Details/{tripId}");
         }
@@ -75,15 +82,19 @@
 
             if (!this.comments.IsByRider(id, riderId))
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "This is not your comment!";
+                return Redirect(Request.Path);
             }
 
             var deleted = this.comments.Delete(id);
 
             if (!deleted)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
+
+            TempData[MessageConstants.SuccessMessage] = "You have successfully deleted your comment!";
 
             return Redirect($"../../Trips/Details/{tripId}");
         }

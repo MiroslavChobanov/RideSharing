@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using RideSharing.Constants
 @inject SignInManager<IdentityUser> SignInManager
 @inject IDriverService Drivers
 @inject IRiderService Riders
@@ -10,8 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Ride Sharing</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RideSharing.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body >
     <header>
@@ -67,7 +69,9 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <partial name="_UserMessages" />
+    @await RenderSectionAsync("Scripts",false)
 </body>
 </html>

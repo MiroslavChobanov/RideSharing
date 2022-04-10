@@ -12,6 +12,7 @@
     using RideSharing.Data.Models;
     using RideSharing.Services.Riders;
     using RideSharing.Services.Comments;
+    using RideSharing.Constants;
 
     public class TripsController : Controller
     {
@@ -32,6 +33,11 @@
         }
         public IActionResult All()
         {
+            if (!this.riders.IsRider(this.User.Id()))
+            {
+                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
+                return RedirectToAction(nameof(RidersController.Join), "Riders");
+            }
             var trips = this.trips.All();
 
             return View(trips);
@@ -51,6 +57,7 @@
         {
             if (!this.drivers.IsDriver(this.User.Id()))
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
             return View(new AddTripFormModel
@@ -67,6 +74,7 @@
 
             if (driverId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
@@ -87,6 +95,7 @@
                     trip.VehicleId
                     );
 
+            TempData[MessageConstants.SuccessMessage] = "Successfully added trip!";
 
             return Redirect("/Trips/All");
         }
@@ -105,6 +114,7 @@
 
             if (!this.drivers.IsDriver(userId))
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
@@ -146,8 +156,11 @@
 
             if (!edited)
             {
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
                 return BadRequest();
             }
+
+            TempData[MessageConstants.SuccessMessage] = "Successfully edited trip!";
 
             return RedirectToAction("All");
         }
@@ -172,8 +185,11 @@
 
             if (!deleted)
             {
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
                 return BadRequest();
             }
+
+            TempData[MessageConstants.SuccessMessage] = "Successfully postponed trip!";
 
             return RedirectToAction("All");
         }
@@ -197,9 +213,11 @@
 
             if (trip.Seats == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "There is no more space!";
                 return BadRequest();
             }
 
+            TempData[MessageConstants.SuccessMessage] = "You have successfully joined the trip!";
 
             this.data.RiderTrips.Add(riderTrip);
 
@@ -216,7 +234,8 @@
 
             if (userId == 0)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
+                return Redirect(Request.Path);
             }
 
             var edited = this.comments.AddCommentToTrip(
@@ -224,6 +243,8 @@
                 DateTime.Now,
                 userId,
                 id);
+
+            TempData[MessageConstants.SuccessMessage] = "You have successfully added a comment!";
 
             return Redirect(Request.Path);
         }

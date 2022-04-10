@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using RideSharing.Infrastructure;
     using RideSharing.Services.Riders.Models;
+    using RideSharing.Constants;
 
     public class RidersController : Controller
     {
@@ -30,7 +31,8 @@
 
             if (this.data.Riders.Any(r => r.UserId == userId))
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "You are already a rider!";
+                return Redirect(Request.Path);
             }
 
             if (!ModelState.IsValid)
@@ -45,6 +47,8 @@
                     rider.PhoneNumber,
                     userId);
 
+            TempData[MessageConstants.SuccessMessage] = "You are now a rider!";
+
             return RedirectToAction(nameof(TripsController.All), "Trips");
         }
 
@@ -55,6 +59,7 @@
 
             if (riderId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
                 return RedirectToAction(nameof(RidersController.Join), "Riders");
             }
 
@@ -81,6 +86,7 @@
 
             if (riderId == 0)
             {
+                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
                 return RedirectToAction(nameof(RidersController.Join), "Riders");
             }
 
@@ -94,8 +100,11 @@
 
             if (!edited)
             {
-                return BadRequest();
+                TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
+                return Redirect(Request.Path);
             }
+
+            TempData[MessageConstants.SuccessMessage] = "You have successfully edited your information!";
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

@@ -28,7 +28,9 @@
                    
                     @foreach (var trip in Model)
                     {
-                            <tr>
+                        @if(@trip.Seats > 0)
+                        {
+                             <tr>
                                 <td>@trip.StartTime</td>
                                 <td>@trip.EndTime</td>
                                 <td>@trip.Duration</td>
@@ -52,8 +54,8 @@
                                     <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-primary ">Info</a>
                                 </td>
                             </tr>
+                        }
                     }
-
                 </tbody>
             </table>
         </div>

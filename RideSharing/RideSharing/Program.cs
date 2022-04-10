@@ -11,7 +11,7 @@ using RideSharing.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+var configuration = builder.Configuration;
 var connectionString = builder
     .Configuration
     .GetConnectionString("DefaultConnection");
@@ -35,6 +35,12 @@ builder
         options.Password.RequireUppercase = false;
     })
     .AddEntityFrameworkStores<RideSharingDbContext>();
+
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
 
 builder
     .Services.AddTransient<IVehicleService, VehicleService>();

@@ -1,11 +1,13 @@
 ﻿namespace RideSharing.Infrastructure
 {
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using RideSharing.Data;
     using RideSharing.Data.Models;
 
+    using static Constants.UserConstants;
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(
@@ -52,6 +54,42 @@
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task
+                .Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(AdministratorRole))
+                    {
+                        return;
+                    }
+
+                    var role = new IdentityRole { Name = AdministratorRole };
+
+                    await roleManager.CreateAsync(role);
+
+                    const string adminEmail = "admin@rs.com";
+                    const string adminPassword = "admin123";
+
+                    var user = new User
+                    {
+                        Email = adminEmail,
+                        UserName = adminEmail,
+                        FirstName = "Admin",
+                        LastName = "Admin"
+                    };
+
+                    await userManager.CreateAsync(user, adminPassword);
+
+                    await userManager.AddToRoleAsync(user, role.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

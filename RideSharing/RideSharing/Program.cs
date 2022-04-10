@@ -12,6 +12,7 @@ using RideSharing.Services.Users;
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
+
 var connectionString = builder
     .Configuration
     .GetConnectionString("DefaultConnection");
@@ -33,6 +34,8 @@ builder
         options.Password.RequireLowercase = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<RideSharingDbContext>();
 

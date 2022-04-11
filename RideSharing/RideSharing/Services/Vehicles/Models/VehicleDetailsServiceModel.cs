@@ -16,7 +16,6 @@
         public string ImagePath { get; init; }
 
         public string UserId { get; init; }
-        public bool IsDeleted { get; init; }
 
     }
 }

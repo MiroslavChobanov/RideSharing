@@ -145,7 +145,7 @@
                 return View(vehicle);
             }
 
-            if (!this.vehicles.IsByDealer(id, driverId) )
+            if (!this.vehicles.IsByDriver(id, driverId) )
             {
                 TempData[MessageConstants.ErrorMessage] = "This is not your vehicle!";
                 return Redirect(Request.Path);
@@ -202,7 +202,7 @@
                 return RedirectToAction(nameof(DriversController.Join), "Drivers");
             }
 
-            if (!this.vehicles.IsByDealer(id, driverId))
+            if (!this.vehicles.IsByDriver(id, driverId))
             {
                 TempData[MessageConstants.ErrorMessage] = "This is not your vehicle!";
                 return Redirect(Request.Path);

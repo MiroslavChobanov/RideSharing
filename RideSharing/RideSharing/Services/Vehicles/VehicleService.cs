@@ -85,6 +85,7 @@
                     Brand = v.Brand,
                     Model = v.Model,
                     YearOfCreation = v.YearOfCreation,
+                    LastServicingDate = v.LastServicingDate,
                     VehicleTypeId = v.VehicleTypeId,
                     DriverId = v.DriverId.ToString(),
                     DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
@@ -116,13 +117,11 @@
                      Brand = v.Brand,
                      Model = v.Model,
                      YearOfCreation = v.YearOfCreation,
-                     LastServicingDate = v.LastServicingDate,
                      VehicleTypeId = v.VehicleTypeId,
                      VehicleType = v.VehicleType,
                      DriverId = v.DriverId.ToString(),
                      DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
-                     ImagePath = v.ImagePath,
-                     IsDeleted = v.IsDeleted
+                     ImagePath = v.ImagePath
                  })
                  .OrderByDescending(v => v.YearOfCreation)
                  .ToList();
@@ -155,13 +154,6 @@
             this.data.SaveChanges();
 
             return true;
-        }
-
-        public bool IsByDealer(int vehicleId, int driverId)
-        {
-            return this.data
-                .Vehicles
-                .Any(v => v.Id == vehicleId && v.DriverId == driverId);
         }
 
         public IEnumerable<VehicleDetailsServiceModel> ByUser(string userId)

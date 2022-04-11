@@ -36,8 +36,6 @@ namespace RideSharing.Services.Vehicles
 
         public bool Delete(int id);
 
-        public bool IsByDealer(int vehicleId, int driverId);
-
         IEnumerable<VehicleDetailsServiceModel> ByUser(string userId);
     }
 }

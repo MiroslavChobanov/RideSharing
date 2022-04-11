@@ -61,6 +61,54 @@ namespace RideSharing.Test
             Assert.Equal("Brand 2", vehicle.Brand);
         }
 
+        [Fact]
+        public void IsByDriverWorks()
+        {
+            var options = new DbContextOptionsBuilder<RideSharingDbContext>().UseInMemoryDatabase("IsByDriverWorks").Options;
+            var dbContext = new RideSharingDbContext(options);
+            dbContext.Vehicles.Add(new Vehicle
+            {
+                Brand = "Brand 1",
+                Model = "Model 1",
+                YearOfCreation = 1999,
+                LastServicingDate = System.DateTime.Now,
+                ImagePath = "",
+                VehicleTypeId = 1,
+                DriverId = 1
+            });
 
+            dbContext.Drivers.Add(new Driver
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                Gender = "Male",
+                PhoneNumber = "0888812345",
+                UserId = "1"
+            });
+
+            dbContext.SaveChanges();
+            var service = new VehicleService(dbContext);
+
+            var isByDriver = service.IsByDriver(1, 1);
+            Assert.True(isByDriver);
+        }
+
+        [Fact]
+        public void AllVehicleTypesWorks()
+        {
+            var options = new DbContextOptionsBuilder<RideSharingDbContext>().UseInMemoryDatabase("AllVehicleTypesWorks").Options;
+            var dbContext = new RideSharingDbContext(options);
+            dbContext.VehicleTypes.Add(new VehicleType
+            {
+                Id = 1,
+                Type = "Sedan"
+            });
+
+            dbContext.SaveChanges();
+            var service = new VehicleService(dbContext);
+
+            var vehicleTypes = service.AllVehicleTypes();
+            Assert.Single(vehicleTypes);
+        }
     }
 }

@@ -25,7 +25,6 @@ namespace RideSharing.Test
             });
 
             dbContext.SaveChanges();
-            var service = new VehicleService(dbContext);
 
             Assert.Single(dbContext.Vehicles);
         }

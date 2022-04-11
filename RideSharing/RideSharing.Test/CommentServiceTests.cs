@@ -22,7 +22,6 @@
             });
 
             dbContext.SaveChanges();
-            var service = new CommentService(dbContext);
 
             Assert.Single(dbContext.Comments);
         }
@@ -112,6 +111,33 @@
 
             var idOfTrip = service.IdOfTrip(1);
             Assert.Equal(1,idOfTrip);
+        }
+
+        [Fact]
+        public void DeleteCommentWorks()
+        {
+            var options = new DbContextOptionsBuilder<RideSharingDbContext>().UseInMemoryDatabase("DeleteCommentWorks").Options;
+            var dbContext = new RideSharingDbContext(options);
+            dbContext.Comments.Add(new Comment
+            {
+                Description = "desc",
+                Date = System.DateTime.Today,
+                RiderId = 1,
+                TripId = 1
+            });
+            dbContext.Comments.Add(new Comment
+            {
+                Description = "descTEST",
+                Date = System.DateTime.Today,
+                RiderId = 2,
+                TripId = 2
+            });
+
+            dbContext.SaveChanges();
+            var service = new CommentService(dbContext);
+
+            service.Delete(1);
+            Assert.Single(dbContext.Comments);
         }
     }
 }

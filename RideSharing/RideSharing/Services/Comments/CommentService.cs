@@ -46,16 +46,20 @@
         }
 
         public bool IsByRider(int commentId, int riderId)
-            => this.data
+        {
+            return this.data
                 .Comments
                 .Any(c => c.Id == commentId && c.RiderId == riderId);
+        }
 
         public int IdOfTrip(int commentId)
-            => this.data
+        {
+            return this.data
                 .Comments
                 .Where(c => c.Id == commentId)
                 .Select(c => c.TripId)
                 .FirstOrDefault();
+        }
 
         public bool Delete(int id)
         {

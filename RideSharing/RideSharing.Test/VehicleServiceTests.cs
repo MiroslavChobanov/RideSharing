@@ -110,5 +110,35 @@ namespace RideSharing.Test
             var vehicleTypes = service.AllVehicleTypes();
             Assert.Single(vehicleTypes);
         }
+        [Fact]
+        public void DeleteVehicleWorks()
+        {
+            var options = new DbContextOptionsBuilder<RideSharingDbContext>().UseInMemoryDatabase("DeleteVehicleWorks").Options;
+            var dbContext = new RideSharingDbContext(options);
+            dbContext.Vehicles.Add(new Vehicle
+            {
+                Brand = "Brand 1",
+                Model = "Model 1",
+                YearOfCreation = 1999,
+                ImagePath = "",
+                VehicleTypeId = 1,
+                DriverId = 1
+            });
+            dbContext.Vehicles.Add(new Vehicle
+            {
+                Brand = "Brand 2",
+                Model = "Model 2",
+                YearOfCreation = 2001,
+                ImagePath = "",
+                VehicleTypeId = 2,
+                DriverId = 2
+            });
+
+            dbContext.SaveChanges();
+            var service = new VehicleService(dbContext);
+
+            service.Delete(1);
+            Assert.Single(dbContext.Vehicles);
+        }
     }
 }

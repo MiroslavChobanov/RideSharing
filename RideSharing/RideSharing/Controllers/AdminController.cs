@@ -7,12 +7,10 @@
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IAdminService admins;
         private readonly IUserService users;
-        public AdminController(RoleManager<IdentityRole> roleManager, IAdminService admins, IUserService users)
+        public AdminController(RoleManager<IdentityRole> roleManager, IUserService users)
         {
             this.roleManager = roleManager;
-            this.admins = admins;
             this.users = users;
         }
         public IActionResult Index()

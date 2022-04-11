@@ -116,11 +116,13 @@
                      Brand = v.Brand,
                      Model = v.Model,
                      YearOfCreation = v.YearOfCreation,
+                     LastServicingDate = v.LastServicingDate,
                      VehicleTypeId = v.VehicleTypeId,
                      VehicleType = v.VehicleType,
                      DriverId = v.DriverId.ToString(),
                      DriverName = v.Driver.FirstName + " " + v.Driver.LastName,
-                     ImagePath = v.ImagePath
+                     ImagePath = v.ImagePath,
+                     IsDeleted = v.IsDeleted
                  })
                  .OrderByDescending(v => v.YearOfCreation)
                  .ToList();

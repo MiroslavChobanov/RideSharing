@@ -48,7 +48,7 @@
             string gender,
             string phoneNumber)
         {
-            var riderData = this.data.Drivers.Find(riderId);
+            var riderData = this.data.Riders.Find(riderId);
 
             if (riderData == null)
             {

@@ -124,5 +124,40 @@
             service.Postpone(1);
             Assert.Single(dbContext.Trips);
         }
+
+        [Fact]
+        public void AllTripsWorks()
+        {
+            var options = new DbContextOptionsBuilder<RideSharingDbContext>().UseInMemoryDatabase("AllTripsWorks").Options;
+            var dbContext = new RideSharingDbContext(options);
+            dbContext.Trips.Add(new Trip
+            {
+                StartTime = System.DateTime.Today,
+                EndTime = System.DateTime.MaxValue,
+                Duration = System.TimeSpan.MinValue,
+                PickUpLocation = "Sofia",
+                DropOffLocation = "Plovdiv",
+                Seats = 3,
+                TripCost = 13.33M,
+                DriverId = 1,
+                VehicleId = 1
+            });
+            dbContext.Trips.Add(new Trip
+            {
+                StartTime = System.DateTime.Today,
+                EndTime = System.DateTime.MaxValue,
+                Duration = System.TimeSpan.MinValue,
+                PickUpLocation = "Varna",
+                DropOffLocation = "Pleven",
+                Seats = 2,
+                TripCost = 13.33M,
+                DriverId = 2,
+                VehicleId = 2
+            });
+            dbContext.SaveChanges();
+            var service = new TripService(dbContext);
+
+            Assert.Equal(2, service.All().Count);
+        }
     }
 }

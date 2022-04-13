@@ -34,5 +34,11 @@
 
             return View(detailsForm);
         }
+
+        [Authorize]
+        public IActionResult Chat()
+        {
+            return View();
+        }
     }
 }

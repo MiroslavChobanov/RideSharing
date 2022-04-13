@@ -38,7 +38,7 @@
     {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Join">Join As Driver</a>
-        </li>
+        </li>  
     }
 
         @if (userIsRider)
@@ -50,6 +50,13 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="RiderProfile" asp-route-id="@UserManager.Users.First(x => x.UserName == User.Identity.Name).Id">My Profile</a>
             </li>
         }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Riders" asp-action="Join">Join As Rider</a>
+            </li>
+        }
+
         <li class="nav-item">
             <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity?.Name!</a>
         </li>

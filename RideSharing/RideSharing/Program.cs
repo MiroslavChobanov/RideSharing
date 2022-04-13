@@ -8,7 +8,9 @@ using RideSharing.Services.Trips;
 using RideSharing.Services.Riders;
 using RideSharing.Services.Comments;
 using RideSharing.Services.Users;
+using RideSharing.Hubs;
 using Microsoft.AspNetCore.Mvc;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,23 +63,20 @@ builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
 });
 
-builder
-    .Services.AddTransient<IVehicleService, VehicleService>();
+builder.Services.AddTransient<IVehicleService, VehicleService>();
 
-builder
-    .Services.AddTransient<IDriverService, DriverService>();
+builder.Services.AddTransient<IDriverService, DriverService>();
 
-builder
-    .Services.AddTransient<ITripService, TripService>();
+builder.Services.AddTransient<ITripService, TripService>();
 
-builder
-    .Services.AddTransient<IRiderService, RiderService>();
+builder.Services.AddTransient<IRiderService, RiderService>();
 
-builder
-    .Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 
-builder
-    .Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IUserService, UserService>();
+
+builder.Services.AddSignalR();
+
 
 var app = builder.Build();
     app.PrepareDatabase();
@@ -102,6 +101,7 @@ app.UseHttpsRedirection()
 app.MapDefaultControllerRoute();
 
 app.MapRazorPages();
+app.MapHub<ChatHub>("/chatHub");
 app.UseAuthentication();
 app.Run();
 

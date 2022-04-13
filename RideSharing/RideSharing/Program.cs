@@ -8,6 +8,7 @@ using RideSharing.Services.Trips;
 using RideSharing.Services.Riders;
 using RideSharing.Services.Comments;
 using RideSharing.Services.Users;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,15 @@ builder
 builder
     .Services
     .AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
+
+builder
+    .Services
+    .AddMemoryCache();
 
 builder
     .Services
@@ -68,10 +78,6 @@ builder
 
 builder
     .Services.AddTransient<IUserService, UserService>();
-
-builder
-    .Services
-    .AddControllersWithViews();
 
 var app = builder.Build();
     app.PrepareDatabase();

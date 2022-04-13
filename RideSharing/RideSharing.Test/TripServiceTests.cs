@@ -5,6 +5,8 @@
     using Microsoft.EntityFrameworkCore;
     using Xunit;
     using RideSharing.Services.Trips;
+    using System.Collections.Generic;
+
     public class TripServiceTests
     {
         [Fact]

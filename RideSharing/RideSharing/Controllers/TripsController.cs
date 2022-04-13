@@ -1,7 +1,6 @@
 ﻿namespace RideSharing.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using RideSharing.Data;
     using RideSharing.Models.Trips;
     using RideSharing.Models.Comments;
@@ -13,6 +12,9 @@
     using RideSharing.Services.Riders;
     using RideSharing.Services.Comments;
     using RideSharing.Constants;
+    using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     public class TripsController : Controller
     {
@@ -21,24 +23,39 @@
         private readonly IDriverService drivers;
         private readonly IRiderService riders;
         private readonly ICommentService comments;
+        private readonly IMemoryCache cache;
 
         public TripsController(RideSharingDbContext data, ITripService trips,
-            IDriverService drivers, IRiderService riders, ICommentService comments)
+            IDriverService drivers, IRiderService riders, ICommentService comments, IMemoryCache cache)
         {
             this.data = data;
             this.trips = trips;
             this.drivers = drivers;
             this.riders = riders;
             this.comments = comments;
+            this.cache = cache;
         }
         public IActionResult All()
         {
+            const string latestNewsCacheKey = "latestNewsCacheKey";
+
             if (!this.riders.IsRider(this.User.Id()))
             {
                 TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
                 return RedirectToAction(nameof(RidersController.Join), "Riders");
             }
-            var trips = this.trips.All();
+
+            var trips = this.cache.Get<List<TripDetailsServiceModel>>(latestNewsCacheKey);
+
+            if (trips == null)
+            {
+                trips = this.trips.All();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+                this.cache.Set(latestNewsCacheKey, trips, cacheOptions);
+            }
 
             return View(trips);
         }

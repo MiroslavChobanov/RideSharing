@@ -25,6 +25,7 @@
         public int Seats { get; init; }
         [Display(Name = "Trip Cost")]
         public decimal TripCost { get; init; }
+        public bool IsPublic { get; init; }
 
         public ICollection<CommentListingModel> Comments { get; set; }
     }

@@ -21,6 +21,8 @@
 
         public decimal TripCost { get; set; }
         public double? TripRating { get; set; }
+        
+        public bool isPublic { get; set; }
 
         public IEnumerable<RiderTrip> RidersTrips { get; set; } = new List<RiderTrip>();
         public IEnumerable<Comment> Comments { get; set; } = new List<Comment>();

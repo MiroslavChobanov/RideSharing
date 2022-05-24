@@ -196,5 +196,21 @@
                 })
                 .ToList();
         }
+
+        public void ChangeVisibility(int tripId)
+        {
+            var trip = this.data.Trips.Find(tripId);
+
+            trip.isPublic = !trip.isPublic;
+
+            this.data.SaveChanges();
+        }
+
+        public bool IsByDriver(int tripId, int driverId)
+        {
+            return this.data
+                .Trips
+                .Any(t => t.Id == tripId && t.DriverId == driverId);
+        }
     }
 }

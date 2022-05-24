@@ -39,11 +39,11 @@
         {
             const string latestNewsCacheKey = "latestNewsCacheKey";
 
-            if (!this.riders.IsRider(this.User.Id()))
-            {
-                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
-                return RedirectToAction(nameof(RidersController.Join), "Riders");
-            }
+            //if (!this.riders.IsRider(this.User.Id()))
+            //{
+            //    TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
+            //    return RedirectToAction(nameof(RidersController.Join), "Riders");
+            //}
 
             var trips = this.cache.Get<List<TripDetailsServiceModel>>(latestNewsCacheKey);
 
@@ -114,7 +114,7 @@
 
             TempData[MessageConstants.SuccessMessage] = "Successfully added trip!";
 
-            return Redirect("/Trips/All");
+            return Redirect("/Trips/MyTrips");
         }
 
         public async Task<IActionResult> Details(int id)
@@ -128,6 +128,7 @@
         public IActionResult Edit(int id)
         {
             var userId = this.User.Id();
+            var driverId = this.drivers.IdByUser(this.User.Id());
 
             if (!this.drivers.IsDriver(userId))
             {
@@ -136,6 +137,12 @@
             }
 
             var trip = this.trips.Details(id);
+
+            if (!this.trips.IsByDriver(id, driverId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "This is not your trip!";
+                return RedirectToAction(nameof(TripsController.All), "Trips");
+            }
 
             var tripForm = this.data.Trips
                 .Where(t => t.Id == id)
@@ -159,6 +166,20 @@
         [Authorize]
         public IActionResult Edit(int id, EditTripFormModel trip)
         {
+            var userId = this.User.Id();
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (!this.drivers.IsDriver(userId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            if(!this.trips.IsByDriver(id, driverId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "This is not your trip!";
+                return RedirectToAction(nameof(TripsController.All), "Trips");
+            }
 
             var edited = this.trips.Edit(
                 id,
@@ -185,6 +206,30 @@
         [Authorize]
         public IActionResult Postpone(int id)
         {
+            var userId = this.User.Id();
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (!this.drivers.IsDriver(userId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            if (!this.trips.IsByDriver(id, driverId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "This is not your trip!";
+                return RedirectToAction(nameof(TripsController.All), "Trips");
+            }
+
+            var currTrip = data
+                .Trips
+                .FirstOrDefault(t => t.Id == id);
+
+            if (currTrip.RidersTrips.Count() > 0)
+            {
+                TempData[MessageConstants.ErrorMessage] = "You cannot delete the trip!";
+                return RedirectToAction(nameof(TripsController.MyTrips), "Trips");
+            }
 
             var trip = this.trips.Details(id);
 
@@ -197,13 +242,37 @@
         [Authorize]
         public IActionResult Postpone(int id, TripPostponeServiceModel trip)
         {
+            var userId = this.User.Id();
+            var driverId = this.drivers.IdByUser(this.User.Id());
+
+            if (!this.drivers.IsDriver(userId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "You are not a driver!";
+                return RedirectToAction(nameof(DriversController.Join), "Drivers");
+            }
+
+            if (!this.trips.IsByDriver(id, driverId))
+            {
+                TempData[MessageConstants.ErrorMessage] = "This is not your trip!";
+                return RedirectToAction(nameof(TripsController.All), "Trips");
+            }
+
+            var currTrip = data
+                .Trips
+                .FirstOrDefault(t => t.Id == id);
+
+            if (currTrip.RidersTrips.Count() > 0)
+            {
+                TempData[MessageConstants.ErrorMessage] = "You cannot delete the trip!";
+                return RedirectToAction(nameof(TripsController.MyTrips), "Trips");
+            }
 
             var deleted = this.trips.Postpone(id);
 
             if (!deleted)
             {
                 TempData[MessageConstants.ErrorMessage] = "Something went wrong!";
-                return BadRequest();
+                return RedirectToAction(nameof(TripsController.MyTrips), "Trips");
             }
 
             TempData[MessageConstants.SuccessMessage] = "Successfully postponed trip!";
@@ -225,7 +294,6 @@
             var trip = data
                 .Trips
                 .FirstOrDefault(t => t.Id == id);
-
             trip.Seats -= 1;
 
             if (trip.Seats == 0)
@@ -237,7 +305,7 @@
             TempData[MessageConstants.SuccessMessage] = "You have successfully joined the trip!";
 
             this.data.RiderTrips.Add(riderTrip);
-
+           
             this.data.SaveChanges();
 
             return Redirect("/Trips/All");
@@ -249,11 +317,11 @@
         {
             var userId = this.riders.IdByUser(this.User.Id());
 
-            if (userId == 0)
-            {
-                TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
-                return Redirect(Request.Path);
-            }
+            //if (userId == 0)
+            //{
+            //    TempData[MessageConstants.ErrorMessage] = "You are not a rider!";
+            //    return Redirect(Request.Path);
+            //}
 
             var edited = this.comments.AddCommentToTrip(
                 comment.Description,

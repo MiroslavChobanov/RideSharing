@@ -2,7 +2,8 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
+@inject IDriverService Drivers
+@inject IRiderService Riders
 @model RideSharing.Services.Trips.Models.TripDetailsServiceModel
 @{
     ViewData["Title"] = "Details";
@@ -69,8 +70,27 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark">Edit</a> 
-    <a asp-action="All" class="btn btn-primary">Back to List</a>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var userId = User.Id();
+        var userIsDriver = Drivers.IsDriver(userId);
+        var userIsRider = Riders.IsRider(userId);
+
+        
+        @if (userIsDriver) 
+        {
+            <a asp-action="MyTrips" class="btn btn-primary">Back to List</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark">Edit</a> 
+        }
+
+        @if (userIsRider) 
+        {
+            <a asp-action="All" class="btn btn-primary">Back to List</a>
+        }
+        
+    }
+
+    
 </div>
 
   <div class="col-md-12 text-center">

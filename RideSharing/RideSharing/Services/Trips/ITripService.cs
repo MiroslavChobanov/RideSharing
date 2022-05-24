@@ -29,5 +29,8 @@
 
         IEnumerable<TripDetailsServiceModel> ByUser(string userId);
 
+        public void ChangeVisibility(int tripId);
+        public bool IsByDriver(int tripId, int driverId);
+
     }
 }

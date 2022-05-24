@@ -1,9 +1,13 @@
-﻿namespace RideSharing.Controllers
+﻿namespace RideSharing.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using RideSharing.Services.Users;
+    using static AdminConstants;
 
+    [Area(AreaName)]
+    [Authorize(Roles = AdministratorRole)]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -13,9 +17,6 @@
             this.roleManager = roleManager;
             this.users = users;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+
     }
 }

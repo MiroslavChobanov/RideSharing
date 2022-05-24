@@ -11,7 +11,6 @@ using RideSharing.Services.Users;
 using RideSharing.Hubs;
 using Microsoft.AspNetCore.Mvc;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;

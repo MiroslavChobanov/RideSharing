@@ -18,5 +18,6 @@
         public int Seats { get; set; }
         [Display(Name = "Driver Name")]
         public decimal TripCost { get; set; }
+        public int DriverId { get; set; }
     }
 }

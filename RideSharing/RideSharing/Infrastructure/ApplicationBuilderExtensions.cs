@@ -7,7 +7,7 @@
     using RideSharing.Data;
     using RideSharing.Data.Models;
 
-    using static Constants.UserConstants;
+    using static Areas.Admin.AdminConstants;
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(
@@ -19,6 +19,7 @@
             MigrateDatabase(services);
 
             SeedVehicleTypes(services);
+            //SeedAdministrator(services);
 
             return app;
         }
@@ -56,40 +57,40 @@
             data.SaveChanges();
         }
 
-        private static void SeedAdministrator(IServiceProvider services)
-        {
-            var userManager = services.GetRequiredService<UserManager<User>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        //private static void SeedAdministrator(IServiceProvider services)
+        //{
+        //    var userManager = services.GetRequiredService<UserManager<User>>();
+        //    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            Task
-                .Run(async () =>
-                {
-                    if (await roleManager.RoleExistsAsync(AdministratorRole))
-                    {
-                        return;
-                    }
+        //    Task
+        //        .Run(async () =>
+        //        {
+        //            if (await roleManager.RoleExistsAsync(AdministratorRole))
+        //            {
+        //                return;
+        //            }
 
-                    var role = new IdentityRole { Name = AdministratorRole };
+        //            var role = new IdentityRole { Name = AdministratorRole };
 
-                    await roleManager.CreateAsync(role);
+        //            await roleManager.CreateAsync(role);
 
-                    const string adminEmail = "admin@rs.com";
-                    const string adminPassword = "admin123";
+        //            const string adminEmail = "admin@rs.com";
+        //            const string adminPassword = "admin123";
 
-                    var user = new User
-                    {
-                        Email = adminEmail,
-                        UserName = adminEmail,
-                        FirstName = "Admin",
-                        LastName = "Admin"
-                    };
+        //            var user = new User
+        //            {
+        //                Email = adminEmail,
+        //                UserName = adminEmail,
+        //                FirstName = "Admin",
+        //                LastName = "Admin"
+        //            };
 
-                    await userManager.CreateAsync(user, adminPassword);
+        //            await userManager.CreateAsync(user, adminPassword);
 
-                    await userManager.AddToRoleAsync(user, role.Name);
-                })
-                .GetAwaiter()
-                .GetResult();
-        }
+        //            await userManager.AddToRoleAsync(user, role.Name);
+        //        })
+        //        .GetAwaiter()
+        //        .GetResult();
+        //}
     }
 }

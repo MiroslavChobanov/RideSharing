@@ -7,10 +7,10 @@
 <div class="card">
     @if (!Model.Any())
 {
-    <h2 class="text-center">You do not have any vehicles yet!</h2>
-    <h2 class="text-center">Want to add your first one?</h2>
-    <h2 class="text-center">Click the button below.</h2>
-    <a asp-controller="Vehicles" asp-action="Add" class="btn btn-primary text-center">Add vehicle</a>
+    <h2 class="text-center">Все още нямате добавени превозни средства!</h2>
+    <h2 class="text-center">Желаете ли да добавите своето първо превозно средство?</h2>
+    <h2 class="text-center">Натиснете бутона по-долу.</h2>
+    <a asp-controller="Vehicles" asp-action="Add" class="btn btn-primary text-center">Добавяне на превозно средство</a>
 }
 </div>
 </div>
@@ -21,12 +21,12 @@
     {
         <div class="col-md-4">
             <div class="card mb-3">
-                <img  class="card-img-top" src="@vehicle.ImagePath" alt="@vehicle.Brand @vehicle.Model - @vehicle.YearOfCreation" style="width:100%">
+                <img  class="card-img-top" src="@vehicle.ImagePath" alt="@vehicle.Brand @vehicle.Model - @vehicle.YearOfCreation" width = "300" height = "300">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@vehicle.Brand @vehicle.Model @vehicle.YearOfCreation </h5>
-                        <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-primary">View</a>
-                        <a asp-controller="Vehicles" asp-action="Edit" asp-route-id="@vehicle.Id" class="btn btn-dark">Edit</a>
-                        <a asp-controller="Vehicles" asp-action="Delete" asp-route-id="@vehicle.Id" class="btn btn-danger">Delete</a>
+                        <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-primary">Детайли</a>
+                        <a asp-controller="Vehicles" asp-action="Edit" asp-route-id="@vehicle.Id" class="btn btn-dark">Редактиране</a>
+                        <a asp-controller="Vehicles" asp-action="Delete" asp-route-id="@vehicle.Id" class="btn btn-danger">Изтриване</a>
                 </div>
             </div>
         </div>

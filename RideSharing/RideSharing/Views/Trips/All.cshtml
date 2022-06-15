@@ -6,20 +6,20 @@
 @{
     ViewData["Title"] = "All Trips";
 }
-<h3>All Available Trips</h3>
+<h3>Всички пътувания</h3>
 <section class="py-5">
     <div class="container">
         <div>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Start Time</th>
-                        <th scope="col">End Time</th>
-                        <th scope="col">Duration</th>
-                        <th scope="col">Pick-Up Location</th>
-                        <th scope="col">Drop-Off Location</th>
-                        <th scope="col">Seats</th>
-                        <th scope="col">Trip Cost</th>
+                        <th scope="col">Дата и час на тръгване</th>
+                        <th scope="col">Дата и час на пристигане</th>
+                        <th scope="col">Продължителност</th>
+                        <th scope="col">Начална дестинация</th>
+                        <th scope="col">Крайна дестинация</th>
+                        <th scope="col">Места</th>
+                        <th scope="col">Цена</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>                     
@@ -40,18 +40,18 @@
                                 <td>@trip.TripCost</td>
                                 <td>
 
-                                    <a asp-controller="Trips" asp-action="Join" asp-route-id="@trip.Id" class="btn btn-success">Join</a>
+                                    <a asp-controller="Trips" asp-action="Join" asp-route-id="@trip.Id" class="btn btn-success">Присъединяване</a>
                                     @if (SignInManager.IsSignedIn(User))
                                     {
                                         var userId = User.Id();
                                         var userIsDriver = Drivers.IsDriver(userId);
                                         @if (userIsDriver)
                                         {
-                                            <a asp-controller="Trips" asp-action="Edit" asp-route-id="@trip.Id" class="btn btn-dark">Edit</a>
-                                            <a asp-controller="Trips" asp-action="Postpone" asp-route-id="@trip.Id" class="btn btn-danger">Postpone</a>
+                                            <a asp-controller="Trips" asp-action="Edit" asp-route-id="@trip.Id" class="btn btn-dark">Редактиране</a>
+                                            <a asp-controller="Trips" asp-action="Postpone" asp-route-id="@trip.Id" class="btn btn-danger">Отмяна</a>
                                         }
                                     }
-                                    <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-primary ">Info</a>
+                                    <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-primary ">Детайли</a>
                                 </td>
                             </tr>
                         }

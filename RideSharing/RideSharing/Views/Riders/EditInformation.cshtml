@@ -11,30 +11,30 @@
         <form method="post">
             <div class="form-group">
                 <label asp-for="FirstName"></label>
-                <input asp-for="FirstName" class="form-control" placeholder="First name here ...">
+                <input asp-for="FirstName" class="form-control" placeholder="Първо име ...">
                 <span asp-validation-for="FirstName" class="small text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" placeholder="Last name here ...">
+                <input asp-for="LastName" class="form-control" placeholder="Фамилия ...">
                 <span asp-validation-for="LastName" class="small text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
 				<select id="Gender" name="Gender" class="form-control" size="1">
                 <option value=""></option>
-				<option value="Male">Male</option>
-				<option value="Female">Female</option>
-				<option value="Other">Other</option>
+				<option value="Мъж">Мъж</option>
+				<option value="Жена">Жена</option>
+				<option value="Друг">Друг</option>
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number here...">
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Телефонен номер ...">
                 <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
             </div>
 
-            <input class="btn btn-primary mt-3" type="submit" value="Save" />
+            <input class="btn btn-primary mt-3" type="submit" value="Запази" />
         </form>
     </div>
 </div>

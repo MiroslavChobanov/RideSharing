@@ -19,62 +19,62 @@
     @if (userIsDriver)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Add">Add Vehicle</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Add">Добавяне на МПС</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="Add">Add New Trip</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="Add">Добавяне на пътуване</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Resign" asp-route-id="@userId">Quit job</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Resign" asp-route-id="@userId">Напускане</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="EditInformation" asp-route-id="@driverId">Edit Driver Information</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="EditInformation" asp-route-id="@driverId">Редактиране на шофьорска информация</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="DriverProfile" asp-route-id="@UserManager.Users.First(x => x.UserName == User.Identity.Name).Id">My Profile</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="DriverProfile" asp-route-id="@UserManager.Users.First(x => x.UserName == User.Identity.Name).Id">Моят профил</a>
             </li>
         }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Join">Join As Driver</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Join">Присъединяване като шофьор</a>
         </li>  
     }
 
         @if (userIsRider)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Riders" asp-action="EditInformation" asp-route-id="@riderId">Edit Rider Information</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Riders" asp-action="EditInformation" asp-route-id="@riderId">Редактиране на пътническа информация</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="RiderProfile" asp-route-id="@UserManager.Users.First(x => x.UserName == User.Identity.Name).Id">My Profile</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="RiderProfile" asp-route-id="@UserManager.Users.First(x => x.UserName == User.Identity.Name).Id">Моят профил</a>
             </li>
         }
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Riders" asp-action="Join">Join As Rider</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Riders" asp-action="Join">Присъединяване като пътник</a>
             </li>
         }
 
         <li class="nav-item">
-            <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity?.Name!</a>
+            <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравейте, @User.Identity?.Name!</a>
         </li>
     
     
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <button  type="submit" class="nav-link btn btn-link text-dark">Излизане</button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Вход</a>
     </li>
 }
 </ul>

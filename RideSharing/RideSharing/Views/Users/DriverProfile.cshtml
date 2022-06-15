@@ -16,7 +16,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <h3 class="profile-username text-center">@Model.Username</h3>
-                        <p class="text-muted text-center">Driver</p>
+                        <p class="text-muted text-center">Шофьор</p>
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
                                 <b>Trips:</b> <a class="float-right">@Model.Trips.Count</a>
@@ -33,7 +33,7 @@
                 {
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">User's email</h3>
+                            <h3 class="card-title">Имейл</h3>
                         </div>
                         <div class="card-body">
                             <strong><i class="far fa-file-alt mr-1"></i>@Model.Email</strong>
@@ -44,10 +44,10 @@
                 {
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">User's email</h3>
+                            <h3 class="card-title">Имейл</h3>
                         </div>
                         <div class="card-body text-center">
-                            <strong>To see the email <a asp-area="Identity" asp-page="/Account/Login">login</a> or <a asp-area="Identity" asp-page="/Account/Register">register</a>.</strong>
+                            <strong>За да видите имейла, <a asp-area="Identity" asp-page="/Account/Login">влезте</a> или <a asp-area="Identity" asp-page="/Account/Register">се регистрирайте</a>.</strong>
                         </div>
                     </div>
                 }
@@ -64,11 +64,11 @@
                             <div class="tab-pane active text-center" id="timeline">
                                 @if (this.User.Identity.Name == Model.Username)
                                 {
-                                    <h3>Welcome to your profile!</h3>
+                                    <h3>Добре дошли в своя профил!</h3>
                                 }
                                 else
                                 {
-                                    <h3>Welcome to @Model.Username!'s profile</h3>
+                                    <h3>Добри дошли в профила на @Model.Username!</h3>
                                 }
                             </div>
 
@@ -76,20 +76,20 @@
                     </div>
                     @if (@Model.Vehicles.Count == 0)
                     {
-                        <h3> You do not have any vehicles yet!</h3>
-                        <a asp-controller="Vehicles" asp-action="Add" class="btn btn-primary">Add Vehicle</a>
+                        <h3>Все още нямате превозни средсва!</h3>
+                        <a asp-controller="Vehicles" asp-action="Add" class="btn btn-primary">Добавяне на превозно средство</a>
                     }
                     else
                     {
-                        <h3> Your vehicles:</h3>
+                        <h3> Вашите МПС:</h3>
                         <div class="tab-pane" id="activity">
 
                             <table class="table">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th scope="col">Brand</th>
-                                        <th scope="col">Model</th>
-                                        <th scope="col">YearOfCreation</th>
+                                        <th scope="col">Марка</th>
+                                        <th scope="col">Модел</th>
+                                        <th scope="col">Година на създаване</th>
                                         <th scope="col"></th>
                                     </tr>                     
                                 </thead>
@@ -102,7 +102,7 @@
                                             <td>@vehicle.Model</td>
                                             <td>@vehicle.YearOfCreation</td>
                                             <td>
-                                                <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-success">View</a>
+                                                <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-success">Детайли</a>
                                             </td>
                                         </tr>
                                     }

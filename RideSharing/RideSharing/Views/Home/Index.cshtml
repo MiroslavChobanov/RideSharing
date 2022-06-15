@@ -9,44 +9,52 @@
     ViewData["Title"] = "Welcome!";
 }
 
-<div class="jumbotron" >
+<div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 align-items-center my-5">
+                
+                <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="https://i.ibb.co/x6LdPHk/pic1.png" alt="..." /></div>
+                <div class="col-lg-5">
+                    <h1 style = font-size:52px;>Добре дошли на най-доброто място за споделено пътуване!</h1>
+                    <br />
+                    <p>
+                        <h4>Искате да намалите своите разходи за пътуване?</h4>
+                    </p>
+                    <p>
+                        <h4>Искате компания по време на път?</h4>
+                    </p>
+					<p>
+                        <h4>В такъв случай сте на правилното място! Натиснете на един от бутоните долу!</h4>
+                    </p>
+                    <p>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var userId = User.Id();
+                            var userIsDriver = Drivers.IsDriver(userId);
+                            var userIsRider = Riders.IsRider(userId);
 
-
-        <h1 class="display-4">Welcome to the best place for mutual travelling!</h1>
-        <p class="lead">Want to reduce the money you spend on travelling?</p>
-        <p class="lead">Want to have some company while on the road?</p>
-        <p class="lead">Then you are in the right place! Click the button below to get started!</p>
-        <hr class="my-4">
-        <p class="lead">
-            @if (SignInManager.IsSignedIn(User))
-            {
-                var userId = User.Id();
-                var userIsDriver = Drivers.IsDriver(userId);
-                var userIsRider = Riders.IsRider(userId);
-
-                @if(!userIsDriver && !userIsRider)
-                {
-                    <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
-                    <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Join As Rider</a>
-                }
-                else if(!userIsDriver && userIsRider)
-                {
-                    <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
-                }
-                else if(userIsDriver && !userIsRider)
-                {
-                    <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Join As Rider</a>
-            }
-        }
-        else
-        {
-            <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Join As Driver</a>
-            <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Join As Rider</a>
-        }
-            
-        </p>
-        <img src="https://icdn.digitaltrends.com/image/digitaltrends/best-ridesharing-apps-scoop-500x500.jpg" class="img-fluid" alt="Responsive image">
-    </div>
+                            @if(!userIsDriver && !userIsRider)
+                            {
+                                <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Присъединяване като шофьор</a>
+                                <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Присъединяване като пътник</a>
+                            }
+                            else if(!userIsDriver && userIsRider)
+                            {
+                                <a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Присъединяване като шофьор</a>
+                            }
+                            else if(userIsDriver && !userIsRider)
+                            {
+                                <a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Присъединяване като пътник</a>
+				            }
+			            }
+			            else
+			            {
+			            	<a asp-controller="Drivers" asp-action="Join" class="btn btn-primary btn-lg" role="button">Присъединяване като шофьор</a>
+			            	<a asp-controller="Riders" asp-action="Join" class="btn btn-danger btn-lg" role="button">Присъединяване като пътник</a>
+			            }
+                        </p>
+                </div>
+            </div>
+        </div>
 
 
     

@@ -4,18 +4,18 @@
 <div class="col-md-12">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Add comment</h3>
+            <h3 class="card-title">Добавяне на коментар</h3>
         </div>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card-body">
                 <div class="form-group">
                     <label asp-for="Description"></label>
-                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Write your comment here..."></textarea>
+                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Напишете своя коментар тук ..."></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary float-right">Add</button>
+                    <button type="submit" class="btn btn-primary float-right">Добавяне</button>
                 </div>
         </form>
     </div>
